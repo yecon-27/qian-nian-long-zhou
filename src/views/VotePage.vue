@@ -2,7 +2,7 @@
   <div id="app">
     <Header @search="handleSearch" />
     <div class="team-cards-container">
-      <TeamVoteCard v-for="card in filteredCards" :key="card.id" :card="card" @toggle-like="toggleLike" />
+      <TeamVoteCard v-for="card in filteredCards" :key="card.id" :card="card" @toggle-vote="toggleVote" />
     </div>
     <SubmissionBar 
       :selectedCount="teamsStore.selectedCardsCount" 
@@ -48,7 +48,7 @@ export default {
     // 检查是否是新的一天，如果是则重置投票状态
     const teamsStore = useTeamsStore()
     if (teamsStore.checkNewDay()) {
-      console.log('新的一天开始，投票状态已重置，点赞量保持不变')
+      console.log('新的一天开始，投票状态已重置')
       // 可以在这里添加一些用户提示
       // alert('新的一天开始，您可以重新投票了！')
     }
@@ -67,7 +67,7 @@ export default {
     handleSearch(keyword) {
       this.searchKeyword = keyword
     },
-    toggleLike(cardId) {
+    toggleVote(cardId) {
       this.teamsStore.toggleLike(cardId)
     },
     handleSubmit(selectedCount) {

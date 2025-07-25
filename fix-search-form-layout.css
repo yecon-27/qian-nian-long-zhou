@@ -1,0 +1,52 @@
+/* 修复搜索框换行问题的CSS解决方案 */
+
+/* 方案1: 修复搜索表单的布局 */
+.search-form .el-form-item {
+  margin-bottom: 10px;
+  white-space: nowrap; /* 防止换行 */
+}
+
+.search-form .el-form-item__label {
+  white-space: nowrap; /* 标签不换行 */
+  min-width: auto; /* 允许标签自适应宽度 */
+}
+
+.search-form .el-input {
+  min-width: 200px; /* 设置输入框最小宽度 */
+}
+
+/* 方案2: 优化响应式布局 */
+.search-form .el-row {
+  flex-wrap: nowrap; /* 防止列换行 */
+}
+
+.search-form .el-col {
+  min-width: 0; /* 允许列收缩 */
+  flex: 0 0 auto; /* 防止过度收缩 */
+}
+
+/* 方案3: 修改字段标签 */
+/* 在Vue组件中将 "作者/队长" 改为 "作者" 或 "队长" */
+
+/* 方案4: 自定义表单布局 */
+.custom-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.custom-search-form .form-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.custom-search-form .form-item label {
+  margin-right: 8px;
+  min-width: max-content;
+}
+
+.custom-search-form .form-item input {
+  min-width: 150px;
+}

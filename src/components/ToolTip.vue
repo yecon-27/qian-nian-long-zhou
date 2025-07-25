@@ -1,7 +1,7 @@
 <template>
   <div class="rank-votes">
     <span>{{ votes }}票</span>
-    <div class="tooltip-container" @click="toggleTooltip" ref="triggerRef">
+    <!-- <div class="tooltip-container" @click="toggleTooltip" ref="triggerRef">
       <img
         src="@/assets/排行榜/票数后的详细信息.png"
         alt="详细信息"
@@ -20,7 +20,7 @@
           <div>天瑞地安客户端阅读量：{{ readCount || 0 }}</div>
         </div>
       </Teleport>
-    </div>
+    </div> -->
   </div>
 </template>
 
