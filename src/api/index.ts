@@ -1,5 +1,5 @@
 // API 基础配置
-import axios, { AxiosInstance, AxiosResponse } from 'axios'
+import axios, { type AxiosInstance, type AxiosResponse } from 'axios'
 
 // 基础配置
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'
@@ -70,7 +70,8 @@ api.interceptors.response.use(
       throw error
     }
     
-    return response.data
+    // Return the data directly, but maintain the response structure for TypeScript
+    return response.data.data as any
   },
   (error) => {
     console.error('Response Error:', error)

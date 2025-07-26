@@ -28,8 +28,8 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await authApi.login(username, password)
       
       // 保存 token
-      token.value = response.token
-      localStorage.setItem('token', response.token)
+      token.value = (response as any).token
+      localStorage.setItem('token', (response as any).token)
       
       // 获取用户信息
       await getUserInfo()
@@ -61,8 +61,8 @@ export const useAuthStore = defineStore('auth', () => {
   const getUserInfo = async () => {
     try {
       const response = await authApi.getUserInfo()
-      user.value = response.user
-      return response.user
+      user.value = (response as any).user
+      return (response as any).user
     } catch (error) {
       console.error('获取用户信息失败:', error)
       // 如果获取用户信息失败，清除登录状态

@@ -1,6 +1,6 @@
 // 用户相关 API
-import api, { ApiResponse } from './index'
-import { User, UserGenerateRequest } from './types'
+import api, { type ApiResponse } from './index'
+import type { User, UserGenerateRequest } from './types'
 
 // 生成用户ID
 export const generateUserId = async (request: UserGenerateRequest = {}): Promise<User> => {
@@ -10,7 +10,7 @@ export const generateUserId = async (request: UserGenerateRequest = {}): Promise
     userIp: 'frontend-request',
     ...request
   })
-  return response.data
+  return response as unknown as User
 }
 
 // 验证用户ID
@@ -24,7 +24,11 @@ export const validateUserId = async (userId: string): Promise<{
     userId: string
     createTime: string
   }>>(`/user/validate/${userId}`)
-  return response.data
+  return response as unknown as {
+    valid: boolean
+    userId: string
+    createTime: string
+  }
 }
 
 // 获取或创建用户ID

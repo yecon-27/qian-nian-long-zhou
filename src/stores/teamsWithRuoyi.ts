@@ -32,7 +32,7 @@ export const useTeamsStore = defineStore('teams', () => {
       loading.value = true
       error.value = null
       const response = await teamApi.getTeamList()
-      teams.value = response || []
+      teams.value = (response as any) || []
     } catch (err: any) {
       error.value = err.message || '加载队伍列表失败'
       console.error('加载队伍列表失败:', err)
@@ -48,7 +48,7 @@ export const useTeamsStore = defineStore('teams', () => {
   const checkTodayVoteStatus = async () => {
     try {
       const response = await voteApi.checkTodayVote()
-      hasVotedToday.value = response.hasVoted || false
+      hasVotedToday.value = (response as any).hasVoted || false
     } catch (err) {
       console.error('检查投票状态失败:', err)
       // 回退到本地存储检查

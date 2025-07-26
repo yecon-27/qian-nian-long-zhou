@@ -1,17 +1,17 @@
 // 配置相关 API
-import api, { ApiResponse } from './index'
-import { ActivityConfig, ActivityRules } from './types'
+import api, { type ApiResponse } from './index'
+import type { ActivityConfig, ActivityRules } from './types'
 
 // 获取活动配置
 export const getActivityConfig = async (): Promise<ActivityConfig> => {
   const response = await api.get<ApiResponse<ActivityConfig>>('/config/activity')
-  return response.data
+  return response as unknown as ActivityConfig
 }
 
 // 获取活动规则
 export const getActivityRules = async (): Promise<ActivityRules> => {
   const response = await api.get<ApiResponse<ActivityRules>>('/config/rules')
-  return response.data
+  return response as unknown as ActivityRules
 }
 
 // 检查活动状态
@@ -25,5 +25,9 @@ export const checkActivityStatus = async (): Promise<{
     isVotingTime: boolean
     message: string
   }>>('/config/status')
-  return response.data
+  return response as unknown as {
+    isActive: boolean
+    isVotingTime: boolean
+    message: string
+  }
 }

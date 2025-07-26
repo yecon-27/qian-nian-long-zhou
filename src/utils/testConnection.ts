@@ -46,10 +46,10 @@ export const testConnection = {
       console.log('✅ 登录接口存在:', response)
       return response
     } catch (error) {
-      if (error.response && error.response.status) {
-        console.log('✅ 登录接口存在，返回状态:', error.response.status)
+      if ((error as any).response && (error as any).response.status) {
+        console.log('✅ 登录接口存在，返回状态:', (error as any).response.status)
         console.log('💡 这是正常的，因为我们发送的是测试数据')
-        return { status: 'exists', error: error.response.data }
+        return { status: 'exists', error: (error as any).response.data }
       } else {
         console.error('❌ 登录接口连接失败:', error)
         return null
