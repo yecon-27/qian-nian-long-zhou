@@ -49,7 +49,7 @@ export const useTeamsStore = defineStore("teams", () => {
             ? team.teamImage.startsWith("/profile/upload")
               ? `http://localhost:8080${team.teamImage}`
               : team.teamImage
-            : new URL("@/assets/投票/龙舟队伍配图.jpg", import.meta.url).href,
+            : "", // 空字符串，完全依赖数据库
           description: team.description || "",
           status: team.status || 0,
           voted: false, // 初始投票状态

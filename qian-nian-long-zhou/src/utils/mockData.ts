@@ -6,7 +6,7 @@ export const mockTeams = [
     teamLeader: '张三',
     teamMembers: 12,
     description: '传承千年龙舟文化，展现瑞安人民的团结精神。我们队伍成立于2020年，由一群热爱龙舟运动的年轻人组成。',
-    teamLogo: '/src/assets/首页/主视觉.png',
+    teamLogo: '', // 删除图片引用
     voteCount: 1256,
     status: '1',
     createTime: '2024-06-01 10:00:00'
@@ -17,7 +17,7 @@ export const mockTeams = [
     teamLeader: '李四',
     teamMembers: 12,
     description: '弘扬龙舟传统文化，传承千年龙舟精神。队伍注重传统技艺的传承与创新。',
-    teamLogo: '/src/assets/首页/主视觉.png',
+    teamLogo: '',
     voteCount: 1089,
     status: '1',
     createTime: '2024-06-02 10:00:00'
@@ -28,7 +28,7 @@ export const mockTeams = [
     teamLeader: '王五',
     teamMembers: 12,
     description: '在传承中创新，在创新中发展龙舟文化。融合现代元素，展现龙舟运动的新魅力。',
-    teamLogo: '/src/assets/首页/主视觉.png',
+    teamLogo: '',
     voteCount: 987,
     status: '1',
     createTime: '2024-06-03 10:00:00'
@@ -39,7 +39,7 @@ export const mockTeams = [
     teamLeader: '赵六',
     teamMembers: 12,
     description: '年轻的力量，传承的使命。我们是最年轻的队伍，但有着最炽热的龙舟梦想。',
-    teamLogo: '/src/assets/首页/主视觉.png',
+    teamLogo: '',
     voteCount: 856,
     status: '1',
     createTime: '2024-06-04 10:00:00'
@@ -50,7 +50,7 @@ export const mockTeams = [
     teamLeader: '钱七',
     teamMembers: 12,
     description: '团结一心，奋勇向前。用团队的力量诠释龙舟精神的真谛。',
-    teamLogo: '/src/assets/首页/主视觉.png',
+    teamLogo: '',
     voteCount: 743,
     status: '1',
     createTime: '2024-06-05 10:00:00'

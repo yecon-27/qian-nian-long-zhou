@@ -17,11 +17,7 @@
         />
       </button>
       <button class="side-btn" @click="$router.push('/rank')">
-        <DynamicImage 
-          resource-key="ranking_icon" 
-          fallback-url="/src/assets/首页/排行.png"
-          alt="排行" 
-        />
+        <DynamicImage resource-key="ranking_icon" alt="排行" />
       </button>
     </div>
   </div>

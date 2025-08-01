@@ -76,7 +76,8 @@ const getDefaultActivityConfig = (): ActivityConfig => ({
   voteEndTime: '2025-08-25 23:59:59',
   activityRules: '1. 每人每天最多可投票3次\n2. 每次最多可选择3个作品\n3. 投票时间：7月15日-8月25日\n4. 严禁刷票等作弊行为',
   ruleImage: '/src/assets/规则/活动规则.png',
-  bannerImage: '/src/assets/首页/主视觉.png'
+  // 第79行删除或修改为：
+  // bannerImage: '' // 删除图片引用
 })
 
 // 加载活动配置

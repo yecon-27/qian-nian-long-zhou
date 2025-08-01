@@ -170,3 +170,5 @@ onMounted(async () => {
   z-index: 2;
 }
 </style>
+<DynamicImage resource-key="rules_icon" alt="规则" />
+<DynamicImage resource-key="ranking_icon" alt="排行" />

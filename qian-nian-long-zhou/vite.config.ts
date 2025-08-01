@@ -34,7 +34,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     assetsInlineLimit: 4096
   },
-  base: './',
+  base: '/', // 改为绝对路径
   server: {
     host: true,
     proxy: {
@@ -42,11 +42,8 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
-      },
-      '/image': {
-        target: 'http://localhost:8080',
-        changeOrigin: true
-      }
+      }, // ✅ 添加缺少的逗号
+      // 移除 /image 代理，因为生产环境不需要
     }
   },
   test: {
