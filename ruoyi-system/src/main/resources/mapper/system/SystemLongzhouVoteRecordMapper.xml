@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SystemLongzhouVoteRecordMapper">
+    
+    <resultMap type="SystemLongzhouVoteRecord" id="LongzhouVoteRecordResult">
+        <result property="voteId"           column="vote_id"            />
+        <result property="userId"           column="user_id"            />
+        <result property="teamId"           column="team_id"            />
+        <result property="voteTime"         column="vote_time"          />
+        <result property="ipAddress"        column="ip_address"         />
+        <result property="voteStatus"       column="vote_status"        />
+        <result property="cancelTime"       column="cancel_time"        />
+        <result property="teamName"         column="team_name"          />
+        <result property="userName"         column="user_name"          />
+    </resultMap>
+
+    <sql id="selectLongzhouVoteRecordVo">
+        select v.vote_id, v.user_id, v.team_id, v.vote_time, v.ip_address, v.vote_status, v.cancel_time,
+               t.team_name, u.user_name
+        from longzhou_vote_record v
+        left join longzhou_team t on v.team_id = t.team_id
+        left join sys_user u on v.user_id = u.user_id
+    </sql>
+
+    <select id="selectLongzhouVoteRecordList" parameterType="SystemLongzhouVoteRecord" resultMap="LongzhouVoteRecordResult">
+        <include refid="selectLongzhouVoteRecordVo"/>
+        <where>  
+            <if test="userId != null "> and v.user_id = #{userId}</if>
+            <if test="teamId != null "> and v.team_id = #{teamId}</if>
+            <if test="voteStatus != null and voteStatus != ''"> and v.vote_status = #{voteStatus}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(v.vote_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(v.vote_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+        </where>
+        order by v.vote_time desc
+    </select>
+    
+    <select id="selectLongzhouVoteRecordByVoteId" parameterType="Long" resultMap="LongzhouVoteRecordResult">
+        <include refid="selectLongzhouVoteRecordVo"/>
+        where v.vote_id = #{voteId}
+    </select>
+
+    <select id="selectUserVoteRecords" parameterType="Long" resultMap="LongzhouVoteRecordResult">
+        <include refid="selectLongzhouVoteRecordVo"/>
+        where v.user_id = #{userId}
+        order by v.vote_time desc
+    </select>
+
+    <select id="selectTodayVoteCount" parameterType="Long" resultType="Integer">
+        select count(*)
+        from longzhou_vote_record
+        where user_id = #{userId}
+          and vote_status = '0'
+          and date(vote_time) = curdate()
+    </select>
+
+    <!-- 查询用户今日已投票的所有队伍信息 -->
+    <!-- 功能说明：
+         1. 获取指定用户今天已经投票的所有队伍列表
+         2. 返回队伍ID和队伍名称，用于前端显示投票状态
+         3. 只查询今日有效的投票记录
+         4. 按投票时间倒序排列，最新投票的队伍排在前面
+    -->
+    <select id="selectTodayVotedTeams" parameterType="Long" resultType="Map">
+        select v.team_id, t.team_name
+        from longzhou_vote_record v
+        left join longzhou_team t on v.team_id = t.team_id
+        where v.user_id = #{userId}        <!-- 指定用户ID -->
+          and v.vote_status = '0'          <!-- 只查询有效投票 -->
+          and date(v.vote_time) = curdate() <!-- 限制为今日投票记录 -->
+        order by v.vote_time desc           <!-- 按投票时间倒序 -->
+    </select>
+
+    <!-- 查询用户对特定队伍今日是否已投票 -->
+    <!-- 功能说明：
+         1. 检查指定用户今天是否已经为指定队伍投过票
+         2. 只查询今日有效的投票记录（vote_status = '0'）
+         3. 配合前端投票状态显示，确保每日投票限制的一致性
+         4. 返回结果：如果今天已投票则返回投票记录，否则返回null
+    -->
+    <select id="selectUserTeamVote" resultMap="LongzhouVoteRecordResult">
+        select vote_id, user_id, team_id, vote_time, ip_address, vote_status, cancel_time
+        from longzhou_vote_record
+        where user_id = #{userId}
+          and team_id = #{teamId}
+          and vote_status = '0'
+          and date(vote_time) = curdate()
+        limit 1
+    </select>
+        
+    <insert id="insertLongzhouVoteRecord" parameterType="SystemLongzhouVoteRecord" useGeneratedKeys="true" keyProperty="voteId">
+        insert into longzhou_vote_record
+        (user_id, team_id, vote_date, vote_time, ip_address, vote_status)
+        values 
+        (#{userId}, #{teamId}, CURDATE(), #{voteTime}, #{ipAddress}, #{voteStatus})
+    </insert>
+
+    <update id="updateLongzhouVoteRecord" parameterType="SystemLongzhouVoteRecord">
+        update longzhou_vote_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="teamId != null">team_id = #{teamId},</if>
+            <if test="voteTime != null">vote_time = #{voteTime},</if>
+            <if test="ipAddress != null">ip_address = #{ipAddress},</if>
+            <if test="voteStatus != null">vote_status = #{voteStatus},</if>
+            <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+        </trim>
+        where vote_id = #{voteId}
+    </update>
+
+    <update id="cancelVote">
+        update longzhou_vote_record
+        set vote_status = '1',
+            cancel_time = #{cancelTime}
+        where vote_id = #{voteId}
+    </update>
+
+    <delete id="deleteLongzhouVoteRecordByVoteId" parameterType="Long">
+        delete from longzhou_vote_record where vote_id = #{voteId}
+    </delete>
+
+    <delete id="deleteLongzhouVoteRecordByVoteIds" parameterType="String">
+        delete from longzhou_vote_record where vote_id in 
+        <foreach item="voteId" collection="array" open="(" separator="," close=")">
+            #{voteId}
+        </foreach>
+    </delete>
+
+    <!-- 执行投票 - 插入投票记录 -->
+    <insert id="executeVote" parameterType="map">
+        INSERT INTO longzhou_vote_record (user_id, team_id, vote_date, vote_time, ip_address, vote_status)
+        VALUES (#{userId}, #{teamId}, CURDATE(), NOW(), #{ipAddress}, '0')
+    </insert>
+
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.longzhou.mapper.LongzhouVoteRecordMapper">
+    
+    <resultMap type="LongzhouVoteRecord" id="LongzhouVoteRecordResult">
+        <result property="voteId"    column="vote_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="teamId"    column="team_id"    />
+        <result property="voteDate"    column="vote_date"    />
+        <result property="voteTime"    column="vote_time"    />
+        <result property="userIp"    column="user_ip"    />
+        <result property="userAgent"    column="user_agent"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLongzhouVoteRecordVo">
+        select vote_id, user_id, team_id, vote_date, vote_time, user_ip, user_agent, status, create_by, create_time, update_by, update_time from longzhou_vote_record
+    </sql>
+
+    <select id="selectLongzhouVoteRecordList" parameterType="LongzhouVoteRecord" resultMap="LongzhouVoteRecordResult">
+        <include refid="selectLongzhouVoteRecordVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="teamId != null "> and team_id = #{teamId}</if>
+            <if test="params.beginVoteDate != null and params.beginVoteDate != '' and params.endVoteDate != null and params.endVoteDate != ''"> and vote_date between #{params.beginVoteDate} and #{params.endVoteDate}</if>
+            <if test="userIp != null  and userIp != ''"> and user_ip like concat('%', #{userIp}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectLongzhouVoteRecordByVoteId" parameterType="Long" resultMap="LongzhouVoteRecordResult">
+        <include refid="selectLongzhouVoteRecordVo"/>
+        where vote_id = #{voteId}
+    </select>
+
+    <insert id="insertLongzhouVoteRecord" parameterType="LongzhouVoteRecord" useGeneratedKeys="true" keyProperty="voteId">
+        insert into longzhou_vote_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="teamId != null">team_id,</if>
+            <if test="voteDate != null">vote_date,</if>
+            <if test="voteTime != null">vote_time,</if>
+            <if test="userIp != null">user_ip,</if>
+            <if test="userAgent != null">user_agent,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="teamId != null">#{teamId},</if>
+            <if test="voteDate != null">#{voteDate},</if>
+            <if test="voteTime != null">#{voteTime},</if>
+            <if test="userIp != null">#{userIp},</if>
+            <if test="userAgent != null">#{userAgent},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLongzhouVoteRecord" parameterType="LongzhouVoteRecord">
+        update longzhou_vote_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="teamId != null">team_id = #{teamId},</if>
+            <if test="voteDate != null">vote_date = #{voteDate},</if>
+            <if test="voteTime != null">vote_time = #{voteTime},</if>
+            <if test="userIp != null">user_ip = #{userIp},</if>
+            <if test="userAgent != null">user_agent = #{userAgent},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where vote_id = #{voteId}
+    </update>
+
+    <delete id="deleteLongzhouVoteRecordByVoteId" parameterType="Long">
+        delete from longzhou_vote_record where vote_id = #{voteId}
+    </delete>
+
+    <delete id="deleteLongzhouVoteRecordByVoteIds" parameterType="String">
+        delete from longzhou_vote_record where vote_id in 
+        <foreach item="voteId" collection="array" open="(" separator="," close=")">
+            #{voteId}
+        </foreach>
+    </delete>
+</mapper>

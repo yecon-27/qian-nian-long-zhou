@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.longzhou.mapper.LongzhouTeamMapper">
+    
+    <resultMap type="LongzhouTeam" id="LongzhouTeamResult">
+        <result property="teamId"    column="team_id"    />
+        <result property="teamName"    column="team_name"    />
+        <result property="teamLeader"    column="team_leader"    />
+        <result property="teamDescription"    column="team_description"    />
+        <result property="teamImage"    column="team_image"    />
+        <result property="activityId"    column="activity_id"    />
+        <result property="totalVotes"    column="total_votes"    />
+        <result property="todayVotes"    column="today_votes"    />
+        <result property="totalViews"    column="total_views"    />
+        <result property="todayViews"    column="today_views"    />
+        <result property="ranking"    column="ranking"    />
+        <result property="displayOrder"    column="display_order"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLongzhouTeamVo">
+        select team_id, team_name, team_leader, team_description, team_image, activity_id, total_votes, today_votes, total_views, today_views, ranking, display_order, status, create_time, update_time from longzhou_team
+    </sql>
+
+    <select id="selectLongzhouTeamList" parameterType="LongzhouTeam" resultMap="LongzhouTeamResult">
+        <include refid="selectLongzhouTeamVo"/>
+        <where>  
+            <if test="teamName != null  and teamName != ''"> and team_name like concat('%', #{teamName}, '%')</if>
+            <if test="teamLeader != null  and teamLeader != ''"> and team_leader like concat('%', #{teamLeader}, '%')</if>
+            <if test="activityId != null "> and activity_id = #{activityId}</if>
+            <if test="totalVotes != null "> and total_votes = #{totalVotes}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectLongzhouTeamByTeamId" parameterType="Long" resultMap="LongzhouTeamResult">
+        <include refid="selectLongzhouTeamVo"/>
+        where team_id = #{teamId}
+    </select>
+
+    <insert id="insertLongzhouTeam" parameterType="LongzhouTeam" useGeneratedKeys="true" keyProperty="teamId">
+        insert into longzhou_team
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teamName != null and teamName != ''">team_name,</if>
+            <if test="teamLeader != null and teamLeader != ''">team_leader,</if>
+            <if test="teamDescription != null">team_description,</if>
+            <if test="teamImage != null">team_image,</if>
+            <if test="activityId != null">activity_id,</if>
+            <if test="totalVotes != null">total_votes,</if>
+            <if test="todayVotes != null">today_votes,</if>
+            <if test="totalViews != null">total_views,</if>
+            <if test="todayViews != null">today_views,</if>
+            <if test="ranking != null">ranking,</if>
+            <if test="displayOrder != null">display_order,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teamName != null and teamName != ''">#{teamName},</if>
+            <if test="teamLeader != null and teamLeader != ''">#{teamLeader},</if>
+            <if test="teamDescription != null">#{teamDescription},</if>
+            <if test="teamImage != null">#{teamImage},</if>
+            <if test="activityId != null">#{activityId},</if>
+            <if test="totalVotes != null">#{totalVotes},</if>
+            <if test="todayVotes != null">#{todayVotes},</if>
+            <if test="totalViews != null">#{totalViews},</if>
+            <if test="todayViews != null">#{todayViews},</if>
+            <if test="ranking != null">#{ranking},</if>
+            <if test="displayOrder != null">#{displayOrder},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLongzhouTeam" parameterType="LongzhouTeam">
+        update longzhou_team
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teamName != null and teamName != ''">team_name = #{teamName},</if>
+            <if test="teamLeader != null and teamLeader != ''">team_leader = #{teamLeader},</if>
+            <if test="teamDescription != null">team_description = #{teamDescription},</if>
+            <if test="teamImage != null">team_image = #{teamImage},</if>
+            <if test="activityId != null">activity_id = #{activityId},</if>
+            <if test="totalVotes != null">total_votes = #{totalVotes},</if>
+            <if test="todayVotes != null">today_votes = #{todayVotes},</if>
+            <if test="totalViews != null">total_views = #{totalViews},</if>
+            <if test="todayViews != null">today_views = #{todayViews},</if>
+            <if test="ranking != null">ranking = #{ranking},</if>
+            <if test="displayOrder != null">display_order = #{displayOrder},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where team_id = #{teamId}
+    </update>
+
+    <delete id="deleteLongzhouTeamByTeamId" parameterType="Long">
+        delete from longzhou_team where team_id = #{teamId}
+    </delete>
+
+    <delete id="deleteLongzhouTeamByTeamIds" parameterType="String">
+        delete from longzhou_team where team_id in 
+        <foreach item="teamId" collection="array" open="(" separator="," close=")">
+            #{teamId}
+        </foreach>
+    </delete>
+
+    <!-- 记录浏览行为 -->
+    <insert id="recordView">
+        INSERT INTO longzhou_view_record (team_id, user_id, user_ip, view_date, view_time)
+        VALUES (#{teamId}, #{userId}, #{ipAddress}, CURDATE(), NOW())
+        ON DUPLICATE KEY UPDATE view_time = NOW()
+    </insert>
+
+    <!-- 获取队伍排行榜 -->
+    <select id="selectLongzhouTeamRanking" resultMap="LongzhouTeamResult">
+        <include refid="selectLongzhouTeamVo"/>
+        WHERE status = '0'
+        ORDER BY total_votes DESC, create_time ASC
+    </select>
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.longzhou.mapper.LongzhouViewRecordMapper">
+    
+    <resultMap type="LongzhouViewRecord" id="LongzhouViewRecordResult">
+        <result property="viewId"    column="view_id"    />
+        <result property="teamId"    column="team_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userIp"    column="user_ip"    />
+        <result property="viewDate"    column="view_date"    />
+        <result property="viewTime"    column="view_time"    />
+        <result property="viewDuration"    column="view_duration"    />
+        <result property="pageType"    column="page_type"    />
+        <result property="referrer"    column="referrer"    />
+        <result property="userAgent"    column="user_agent"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="browserType"    column="browser_type"    />
+        <result property="sessionId"    column="session_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectLongzhouViewRecordVo">
+        select view_id, team_id, user_id, user_ip, view_date, view_time, view_duration, page_type, referrer, user_agent, device_type, browser_type, session_id, create_time from longzhou_view_record
+    </sql>
+
+    <select id="selectLongzhouViewRecordList" parameterType="LongzhouViewRecord" resultMap="LongzhouViewRecordResult">
+        <include refid="selectLongzhouViewRecordVo"/>
+        <where>  
+            <if test="teamId != null "> and team_id = #{teamId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userIp != null  and userIp != ''"> and user_ip = #{userIp}</if>
+            <if test="viewDate != null "> and view_date = #{viewDate}</if>
+            <if test="pageType != null  and pageType != ''"> and page_type = #{pageType}</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
+            <if test="browserType != null  and browserType != ''"> and browser_type = #{browserType}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectLongzhouViewRecordByViewId" parameterType="Long" resultMap="LongzhouViewRecordResult">
+        <include refid="selectLongzhouViewRecordVo"/>
+        where view_id = #{viewId}
+    </select>
+
+    <insert id="insertLongzhouViewRecord" parameterType="LongzhouViewRecord" useGeneratedKeys="true" keyProperty="viewId">
+        insert into longzhou_view_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teamId != null">team_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userIp != null">user_ip,</if>
+            <if test="viewDate != null">view_date,</if>
+            <if test="viewTime != null">view_time,</if>
+            <if test="viewDuration != null">view_duration,</if>
+            <if test="pageType != null">page_type,</if>
+            <if test="referrer != null">referrer,</if>
+            <if test="userAgent != null">user_agent,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="browserType != null">browser_type,</if>
+            <if test="sessionId != null">session_id,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teamId != null">#{teamId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userIp != null">#{userIp},</if>
+            <if test="viewDate != null">#{viewDate},</if>
+            <if test="viewTime != null">#{viewTime},</if>
+            <if test="viewDuration != null">#{viewDuration},</if>
+            <if test="pageType != null">#{pageType},</if>
+            <if test="referrer != null">#{referrer},</if>
+            <if test="userAgent != null">#{userAgent},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="browserType != null">#{browserType},</if>
+            <if test="sessionId != null">#{sessionId},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLongzhouViewRecord" parameterType="LongzhouViewRecord">
+        update longzhou_view_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teamId != null">team_id = #{teamId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userIp != null">user_ip = #{userIp},</if>
+            <if test="viewDate != null">view_date = #{viewDate},</if>
+            <if test="viewTime != null">view_time = #{viewTime},</if>
+            <if test="viewDuration != null">view_duration = #{viewDuration},</if>
+            <if test="pageType != null">page_type = #{pageType},</if>
+            <if test="referrer != null">referrer = #{referrer},</if>
+            <if test="userAgent != null">user_agent = #{userAgent},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="browserType != null">browser_type = #{browserType},</if>
+            <if test="sessionId != null">session_id = #{sessionId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where view_id = #{viewId}
+    </update>
+
+    <delete id="deleteLongzhouViewRecordByViewId" parameterType="Long">
+        delete from longzhou_view_record where view_id = #{viewId}
+    </delete>
+
+    <delete id="deleteLongzhouViewRecordByViewIds" parameterType="String">
+        delete from longzhou_view_record where view_id in 
+        <foreach item="viewId" collection="array" open="(" separator="," close=")">
+            #{viewId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SystemLongzhouTeamMapper">
+    
+    <resultMap type="SystemLongzhouTeam" id="LongzhouTeamResult">
+        <result property="teamId"           column="team_id"            />
+        <result property="teamName"         column="team_name"          />
+        <result property="description"      column="team_description"  />
+        <result property="captainName"      column="team_leader"        />
+        <result property="teamImage"        column="team_image"         />
+        <result property="activityId"       column="activity_id"        />
+        <result property="totalVotes"       column="total_votes"        />
+        <result property="todayVotes"       column="today_votes"        />
+        <result property="viewCount"        column="total_views"        />
+        <result property="todayViews"       column="today_views"        />
+        <result property="ranking"          column="ranking"            />
+        <result property="displayOrder"     column="display_order"      />
+        <result property="status"           column="status"             />
+        <result property="createTime"       column="create_time"        />
+        <result property="updateTime"       column="update_time"        />
+    </resultMap>
+
+    <sql id="selectLongzhouTeamVo">
+        select team_id, team_name, 
+               team_description, 
+               team_leader, 
+               team_image,
+               activity_id,
+               total_votes, 
+               today_votes,
+               total_views, 
+               today_views,
+               ranking,
+               display_order,
+               status, create_time, update_time 
+        from longzhou_team
+    </sql>
+
+    <select id="selectLongzhouTeamList" parameterType="SystemLongzhouTeam" resultMap="LongzhouTeamResult">
+        <include refid="selectLongzhouTeamVo"/>
+        <where>  
+            <if test="teamName != null  and teamName != ''"> and team_name like concat('%', #{teamName}, '%')</if>
+            <if test="description != null  and description != ''"> and team_description like concat('%', #{description}, '%')</if>
+            <if test="captainName != null  and captainName != ''"> and team_leader like concat('%', #{captainName}, '%')</if>
+            <if test="totalVotes != null "> and total_votes = #{totalVotes}</if>
+            <if test="viewCount != null "> and total_views = #{viewCount}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+        order by total_votes desc, create_time desc
+    </select>
+    
+    <select id="selectLongzhouTeamByTeamId" parameterType="Long" resultMap="LongzhouTeamResult">
+        <include refid="selectLongzhouTeamVo"/>
+        where team_id = #{arg0}
+    </select>
+
+    <select id="selectLongzhouTeamRanking" resultMap="LongzhouTeamResult">
+        <include refid="selectLongzhouTeamVo"/>
+        where status = '0'
+        order by total_votes desc, total_views desc, create_time desc
+    </select>
+        
+    <insert id="insertLongzhouTeam" parameterType="SystemLongzhouTeam" useGeneratedKeys="true" keyProperty="teamId">
+        insert into longzhou_team
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teamName != null and teamName != ''">team_name,</if>
+            <if test="description != null">team_description,</if>
+            <if test="captainName != null">team_leader,</if>
+            <if test="teamImage != null">team_image,</if>
+            <if test="activityId != null">activity_id,</if>
+            <if test="totalVotes != null">total_votes,</if>
+            <if test="todayVotes != null">today_votes,</if>
+            <if test="viewCount != null">total_views,</if>
+            <if test="todayViews != null">today_views,</if>
+            <if test="ranking != null">ranking,</if>
+            <if test="displayOrder != null">display_order,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teamName != null and teamName != ''">#{teamName},</if>
+            <if test="description != null">#{description},</if>
+            <if test="captainName != null">#{captainName},</if>
+            <if test="teamImage != null">#{teamImage},</if>
+            <if test="activityId != null">#{activityId},</if>
+            <if test="totalVotes != null">#{totalVotes},</if>
+            <if test="todayVotes != null">#{todayVotes},</if>
+            <if test="viewCount != null">#{viewCount},</if>
+            <if test="todayViews != null">#{todayViews},</if>
+            <if test="ranking != null">#{ranking},</if>
+            <if test="displayOrder != null">#{displayOrder},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLongzhouTeam" parameterType="SystemLongzhouTeam">
+        update longzhou_team
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teamName != null and teamName != ''">team_name = #{teamName},</if>
+            <if test="description != null">team_description = #{description},</if>
+            <if test="captainName != null">team_leader = #{captainName},</if>
+            <if test="teamImage != null">team_image = #{teamImage},</if>
+            <if test="activityId != null">activity_id = #{activityId},</if>
+            <if test="totalVotes != null">total_votes = #{totalVotes},</if>
+            <if test="todayVotes != null">today_votes = #{todayVotes},</if>
+            <if test="viewCount != null">total_views = #{viewCount},</if>
+            <if test="todayViews != null">today_views = #{todayViews},</if>
+            <if test="ranking != null">ranking = #{ranking},</if>
+            <if test="displayOrder != null">display_order = #{displayOrder},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where team_id = #{teamId}
+    </update>
+
+    <delete id="deleteLongzhouTeamByTeamId" parameterType="Long">
+        delete from longzhou_team where team_id = #{arg0}
+    </delete>
+
+    <delete id="deleteLongzhouTeamByTeamIds" parameterType="String">
+        delete from longzhou_team where team_id in 
+        <foreach item="teamId" collection="array" open="(" separator="," close=")">
+            #{teamId}
+        </foreach>
+    </delete>
+
+    <!-- 插入浏览记录 -->
+    <insert id="insertViewRecord">
+        INSERT INTO longzhou_view_record (
+            team_id, user_id, user_ip, view_date, view_time, page_type, user_agent
+        ) VALUES (
+            #{arg0}, #{arg1}, #{arg2}, CURDATE(), NOW(), 'detail', 'Web Browser'
+        )
+    </insert>
+
+    <!-- 更新队伍浏览数 -->
+    <update id="updateViewCount" parameterType="Long">
+        UPDATE longzhou_team 
+        SET total_views = IFNULL(total_views, 0) + 1,
+            today_views = IFNULL(today_views, 0) + 1,
+            update_time = NOW()
+        WHERE team_id = #{arg0}
+    </update>
+
+    <!-- 记录浏览行为 - 组合操作 -->
+    <update id="recordView">
+        <!-- 由于MyBatis限制，这里只能执行更新操作 -->
+        UPDATE longzhou_team 
+        SET total_views = IFNULL(total_views, 0) + 1,
+            today_views = IFNULL(today_views, 0) + 1,
+            update_time = NOW()
+        WHERE team_id = #{arg0}
+    </update>
+
+    <!-- 增加队伍票数 -->
+    <update id="increaseVoteCount" parameterType="Long">
+        update longzhou_team 
+        set total_votes = total_votes + 1,
+            today_votes = today_votes + 1,
+            update_time = now()
+        where team_id = #{arg0}
+    </update>
+
+    <!-- 减少队伍票数 -->
+    <update id="decreaseVoteCount" parameterType="Long">
+        update longzhou_team 
+        set total_votes = total_votes - 1,
+            update_time = now()
+        where team_id = #{arg0} 
+          and total_votes > 0
+    </update>
+
+</mapper>
