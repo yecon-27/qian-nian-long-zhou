@@ -1,40 +1,40 @@
 // API 数据类型定义
 
-// 作品信息
-export interface Work {
-  workId: number
-  workTitle: string
-  workAuthor: string
-  workDescription: string
-  workImage?: string
-  workImages?: string[]
-  workVideo?: string
-  workCategory?: string
-  workTags?: string[]
-  authorIntro?: string
-  creationStory?: string
-  technicalInfo?: string
-  activityId?: number
-  totalVotes: number
-  todayVotes: number
-  totalViews: number
-  todayViews: number
-  ranking: number
-  rankChange?: number
-  isFeatured: boolean
-  displayOrder: number
-  status: number
-  userVoted?: boolean
-  createTime: string
-  publishTime?: string
-}
+// // 作品信息
+// export interface Work {
+//   workId: number
+//   workTitle: string
+//   workAuthor: string
+//   workDescription: string
+//   workImage?: string
+//   workImages?: string[]
+//   workVideo?: string
+//   workCategory?: string
+//   workTags?: string[]
+//   authorIntro?: string
+//   creationStory?: string
+//   technicalInfo?: string
+//   activityId?: number
+//   totalVotes: number
+//   todayVotes: number
+//   totalViews: number
+//   todayViews: number
+//   ranking: number
+//   rankChange?: number
+//   isFeatured: boolean
+//   displayOrder: number
+//   status: number
+//   userVoted?: boolean
+//   createTime: string
+//   publishTime?: string
+// }
 
 // 投票记录
 export interface VoteRecord {
   voteId: number
   workId: number
-  workTitle: string
-  workAuthor: string
+  // workTitle: string
+  // workAuthor: string
   voteDate: string
   voteTime: string
 }
@@ -42,7 +42,7 @@ export interface VoteRecord {
 // 投票请求
 export interface VoteRequest {
   userId: string
-  workId: number
+  // workId: number
   userIp?: string
   userAgent?: string
 }
@@ -61,7 +61,7 @@ export interface UserVoteStatus {
   todayVotes: number
   remainingVotes: number
   dailyLimit: number
-  votedWorks: number[]
+  // votedWorks: number[]
   canVote: boolean
 }
 

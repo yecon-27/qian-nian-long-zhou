@@ -59,13 +59,13 @@ const routes = [
     meta: {
       title: '详情页'
     }
-  },
-  // 可以添加一个404页面
-  {
-    path: '/:pathMatch(.*)*', // 匹配所有未定义路由
-    name: 'NotFound',
-    component: () => import('../views/NotFoundPage.vue') // 假设你有NotFoundPage.vue
   }
+  // 删除或注释掉下面的404路由配置
+  // {
+  //   path: '/:pathMatch(.*)*',
+  //   name: 'NotFound', 
+  //   component: () => import('../views/NotFoundPage.vue')
+  // }
 ];
 
 const router = createRouter({

@@ -57,14 +57,14 @@ export const useAuthStore = defineStore('auth', () => {
         tokenValue = response
       } else if (typeof response === 'object') {
         // 如果response直接包含token
-        if (response.token) {
-          tokenValue = response.token
-          userInfo = response.user
+        if ((response as any).token) {
+          tokenValue = (response as any).token
+          userInfo = (response as any).user
         }
         // 如果response是嵌套结构
-        else if (response.data && response.data.token) {
-          tokenValue = response.data.token
-          userInfo = response.data.user
+        else if ((response as any).data && (response as any).data.token) {
+          tokenValue = (response as any).data.token
+          userInfo = (response as any).data.user
         }
         else {
           throw new Error('登录响应格式错误：未找到token字段')
@@ -115,7 +115,7 @@ export const useAuthStore = defineStore('auth', () => {
   // 获取用户信息
   const getUserInfo = async () => {
     try {
-      const response = await authApi.getUserInfo()
+      const response = await authApi.getUserInfo() as any
       // 若依后端返回的数据结构是 { ..., user: { ... } }
       // 我们的 request 拦截器会返回 data 部分，所以 response 就是那个 data 对象
       if (response && response.user) {

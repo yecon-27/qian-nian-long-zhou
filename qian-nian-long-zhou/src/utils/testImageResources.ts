@@ -10,22 +10,20 @@ export class ImageResourcesTester {
    */
   static async testApiConnection(): Promise<boolean> {
     try {
-      console.log('🔍 测试图片资源API连接...')
-      // 使用没有权限检查的接口进行测试
-      const response = await getImageResourceByKey('home_background')
+      const response = await getImageResourceByKey('home_background') as any;
       
-      console.log('API响应:', response)
+      console.log('API响应:', response);
       
       if (response && (response.code === 200 || response.resourceKey)) {
-        console.log('✅ API连接正常，成功获取图片资源')
-        return true
+        console.log('✅ API连接正常，成功获取图片资源');
+        return true;
       } else {
-        console.error('❌ API连接失败:', response)
-        return false
+        console.error('❌ API连接失败:', response);
+        return false;
       }
     } catch (error) {
-      console.error('❌ API连接异常:', error)
-      return false
+      console.error('❌ API连接测试失败:', error);
+      return false;
     }
   }
 
@@ -129,17 +127,17 @@ export class ImageResourcesTester {
   static async testSimpleApi(): Promise<void> {
     console.log('🔍 测试简单API调用...')
     
+    const resourceKey = 'test_image'; // Define the missing variable
+    
     try {
-      const response = await getImageResourceByKey('home_background')
-      console.log('API响应:', response)
-      
+      const response = await getImageResourceByKey(resourceKey) as any;
       if (response && response.code === 200 && response.data) {
-        console.log('✅ API调用成功，资源键值:', response.data.resourceKey)
-        console.log('✅ 图片URL:', response.data.fileUrl)
+        console.log('✅ API调用成功，资源键值:', response.data.resourceKey);
+        console.log('✅ 图片URL:', response.data.fileUrl);
         
-        // 测试图片是否可以访问
-        const imageUrl = `http://localhost:8080${response.data.fileUrl}`
-        console.log('🔍 测试图片访问:', imageUrl)
+        // Test image accessibility
+        const imageUrl = `http://localhost:8080${response.data.fileUrl}`;
+        console.log('🔍 测试图片访问:', imageUrl);
         
         try {
           const imgResponse = await fetch(imageUrl, { method: 'HEAD' })
@@ -155,7 +153,7 @@ export class ImageResourcesTester {
         console.log('⚠️ API响应格式异常:', response)
       }
     } catch (error) {
-      console.error('❌ API调用失败:', error)
+      console.error('❌ 简单API测试失败:', error);
     }
   }
 

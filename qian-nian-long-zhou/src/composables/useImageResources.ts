@@ -35,7 +35,7 @@ export function useImageResources() {
       loading.value = true;
       error.value = null;
       
-      const response = await getImageResourceByKey(resourceKey);
+      const response = await getImageResourceByKey(resourceKey) as any;
       
       if (response.code === 200 && response.data) {
         const imageUrl = response.data.fileUrl;
@@ -75,7 +75,7 @@ export function useImageResources() {
       loading.value = true;
       error.value = null;
 
-      const response = await getImageResourcesByCategory(category);
+      const response = await getImageResourcesByCategory(category) as any;
       if (response.code === 200 && response.rows) {
         const images = response.rows;
         // 缓存结果

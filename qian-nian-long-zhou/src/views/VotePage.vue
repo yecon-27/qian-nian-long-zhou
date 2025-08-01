@@ -35,7 +35,7 @@ const filteredCards = computed(() => {
   if (!searchKeyword.value) {
     return teamsStore.works
   }
-  return teamsStore.works.filter(card =>
+  return teamsStore.works.filter((card: any) =>
     card.title?.includes(searchKeyword.value) || card.author?.includes(searchKeyword.value)
   )
 })
@@ -45,7 +45,7 @@ const handleSearch = (keyword: string) => {
   searchKeyword.value = keyword
 }
 
-const toggleVote = (id) => {
+const toggleVote = (id: number) => { // 明确指定参数类型
   // 如果用户已经投过票，则不允许再选择
   if (teamsStore.hasVotedToday) {
     showToast({
@@ -105,7 +105,7 @@ onMounted(async () => {
   window.scrollTo(0, 0)
   // 从 API 加载数据
   if (teamsStore.works.length === 0) { // 仅在数据为空时加载
-    await teamsStore.loadWorks()
+    await teamsStore.loadTeams()
   } else if (authStore.isAuthenticated) {
     // 如果数据已存在但用户已登录，重新加载投票状态
     await teamsStore.loadUserVoteStatus()

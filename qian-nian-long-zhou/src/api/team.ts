@@ -66,10 +66,14 @@ export const teamApi = {
   },
 
   // 增加阅读量
-  increaseReadCount: (teamId: number) => {
+  increaseReadCount: (teamId: number, userId?: string) => {
     return request({
       url: `/api/teams/${teamId}/view`,
       method: "post",
+      headers: {
+        'User-ID': userId || '',
+        'Content-Type': 'application/json'
+      }
     });
   },
 };

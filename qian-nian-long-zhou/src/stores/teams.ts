@@ -26,13 +26,13 @@ export const useTeamsStore = defineStore("teams", () => {
   const hasVotedToday = ref(false); // 用户今日是否已投票
 
   // 从 API 加载队伍数据
-  async function loadWorks() {
+  async function loadTeams() {
     loading.value = true;
     error.value = null;
     try {
       // 使用正确的 teamApi - 队伍列表接口
-      const response = await teamApi.getTeamList();
-
+      const response = await teamApi.getTeamList() as any;
+      
       // 处理分页格式的响应
       const teamsArray = response?.rows || response?.data || response || [];
 
@@ -78,12 +78,10 @@ export const useTeamsStore = defineStore("teams", () => {
 
     try {
       const userId = String(authStore.user.userId);
-      const voteStatus = await getUserVoteStatus(userId);
+      const voteStatus = await getUserVoteStatus(userId) as any;
 
-      // 根据后端数据设置投票状态
       hasVotedToday.value = voteStatus && voteStatus.todayVoteCount > 0;
 
-      // 更新队伍的投票状态
       if (voteStatus && voteStatus.votedTeamIds && Array.isArray(voteStatus.votedTeamIds)) {
         // 先重置所有队伍的投票状态
         teamCards.value.forEach((team) => {
@@ -135,7 +133,7 @@ export const useTeamsStore = defineStore("teams", () => {
         await vote({
           userId: String(userId),
           workId: teamId,
-          userAgent: navigator.userAgent,
+          // Remove userAgent as it's not in the expected type
         });
         team.votes++;
         team.voted = true;
@@ -283,7 +281,7 @@ export const useTeamsStore = defineStore("teams", () => {
     hasVotedToday, // 暴露投票状态
 
     // 方法
-    loadWorks,
+    loadTeams, // 改为 loadTeams 而不是 loadWorks
     loadUserVoteStatus,
     toggleVote,
     toggleLike,
@@ -300,3 +298,40 @@ export const useTeamsStore = defineStore("teams", () => {
     votedCardsCount,
   };
 });
+
+// 删除这个重复的 voteForTeam 函数，因为已经有 toggleVote 函数了
+// async function voteForTeam(teamId: number) {
+//   const authStore = useAuthStore();
+//   if (!authStore.isAuthenticated) {
+//     return;
+//   }
+// 
+//   const userId = authStore.user?.userId;
+//   if (!userId) {
+//     return;
+//   }
+// 
+//   const team = teamCards.value.find((t) => t.id === teamId);
+//   if (!team) {
+//     return;
+//   }
+// 
+//   try {
+//     await vote({
+//       userId: String(userId), // Convert to string
+//       workId: teamId
+//       // Remove userAgent as it's not in the expected type
+//     });
+//     team.votes++;
+//     team.voted = true;
+//   } catch (err: any) {
+//     const errorMessage = err.response?.data?.msg || err.message || "投票操作失败，请稍后重试";
+//     
+//     if (errorMessage.includes("已经为该作品投过票了") || errorMessage.includes("您已经投过票了")) {
+//       team.voted = true;
+//       return;
+//     }
+// 
+//     throw err;
+//   }
+// }

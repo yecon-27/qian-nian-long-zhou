@@ -77,7 +77,7 @@ onMounted(async () => {
   
   // 如果 teams store 中没有数据，则加载数据
   if (teamsStore.teamCards.length === 0) {
-    await teamsStore.loadWorks()
+    await teamsStore.loadTeams() // 修改为 loadTeams
   }
 })
 </script>

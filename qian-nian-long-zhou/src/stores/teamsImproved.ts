@@ -1,4 +1,4 @@
-mport { ref, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 
 // 改进的队伍数据类型 - 与数据库字段对应
@@ -150,7 +150,7 @@ const getDefaultData = (): TeamCard[] => {
       readCount: 1880,
       todayVotes: 0,
       todayViews: 0,
-      description: '龙舟竞渡是端午节的传统项目，体现了团队合作的力量。队员们齐心协力，步调一致，在水上展现出完美的协调性。这项运动不仅锻炼身体，更培养了团队精神和拼搏意识。',
+      description: '龙舟竞渡是端午节的传统项目，体现了团队合作的力量。队员们齐心协力，步调一致，在水上展现出了完美的协调性。这项运动不仅锻炼身体，更培养了团队精神和拼搏意识。',
       category: '体育竞技',
       tags: ['竞技', '团队', '合作']
     },

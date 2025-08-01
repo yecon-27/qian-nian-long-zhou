@@ -212,6 +212,9 @@ export default {
 
       // 加载作品详情
       await loadTeamDetail()
+      
+      // 🔧 添加浏览记录调用
+      await recordViewSimple()
     })
 
     const goBack = () => {

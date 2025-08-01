@@ -15,12 +15,12 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { globalImageResources } from '@/composables/useImageResources'
 
 interface Props {
-  resourceKey: string
-  fallbackUrl?: string
-  alt?: string
-  class?: string | object | Array<string | object>
-  style?: string | object
-  preload?: boolean
+  resourceKey: string;
+  fallbackUrl?: string;
+  alt?: string;
+  style?: any;
+  class?: string;
+  preload?: boolean; // 添加 preload 属性
 }
 
 const props = withDefaults(defineProps<Props>(), {
