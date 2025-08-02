@@ -41,11 +41,15 @@ export const teamApi = {
     });
   },
 
-  // 为队伍投票
-  voteForTeam: (teamId: number) => {
+  // 为队伍投票 - 修改为与后端匹配的格式
+  voteForTeam: (teamId: number, userId: string) => {
     return request({
-      url: `/api/teams/${teamId}/vote`,
+      url: "/api/vote",
       method: "post",
+      data: {
+        userId: userId,
+        workId: teamId
+      }
     });
   },
 
@@ -76,23 +80,42 @@ export const teamApi = {
       }
     });
   },
+  // 重新计算排名
+  recalculateRankings: () => {
+    return request({
+      url: "/api/teams/recalculate-rankings-and-display-order",
+      method: "post",
+    });
+  },
 };
 
-// 投票相关 API
+// 投票相关 API - 更新为与后端匹配
 export const voteApi = {
-  // 检查今日是否已投票
-  checkTodayVote: () => {
+  // 检查用户投票状态
+  getUserVoteStatus: (userId: string) => {
     return request({
-      url: "/api/vote/check",
+      url: `/api/vote/status/${userId}`,
       method: "get",
     });
   },
 
-  // 获取用户投票历史
-  getUserVoteHistory: () => {
+  // 获取用户投票记录
+  getUserVoteHistory: (userId: string) => {
     return request({
-      url: "/api/vote/history",
+      url: `/api/vote/records/${userId}`,
       method: "get",
+    });
+  },
+
+  // 取消投票
+  cancelVote: (teamId: number, userId: string) => {
+    return request({
+      url: "/api/vote",
+      method: "delete",
+      data: {
+        userId: userId,
+        workId: teamId
+      }
     });
   },
 };

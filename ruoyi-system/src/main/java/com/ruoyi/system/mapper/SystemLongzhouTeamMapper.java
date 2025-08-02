@@ -109,4 +109,19 @@ public interface SystemLongzhouTeamMapper
      * @return 结果
      */
     public int decreaseVoteCount(Long teamId);
+
+    /**
+     * 批量更新队伍排名
+     * 
+     * @param teams 队伍列表（包含排名信息）
+     * @return 结果
+     */
+    public int updateTeamRankings(List<SystemLongzhouTeam> teams);
+
+    /**
+     * 重新计算并更新所有队伍排名和显示顺序
+     * 
+     * @return 结果
+     */
+    public int recalculateAllRankingsAndDisplayOrder();
 }

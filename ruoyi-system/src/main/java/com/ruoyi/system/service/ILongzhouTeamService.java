@@ -75,4 +75,11 @@ public interface ILongzhouTeamService
      * @return 结果
      */
     public int recordView(Long teamId, Long userId, String ipAddress);
+
+    /**
+     * 重新计算并更新所有队伍排名和显示顺序
+     * 
+     * @return 结果
+     */
+    public int recalculateAllRankingsAndDisplayOrder();
 }

@@ -20,7 +20,7 @@ import com.ruoyi.system.service.ILongzhouVoteRecordService;
  * @date 2025-01-25
  */
 @Service("systemLongzhouVoteRecordService")
-public class LongzhouVoteRecordServiceImpl implements ILongzhouVoteRecordService 
+public class LongzhouVoteRecordServiceImpl implements ILongzhouVoteRecordService
 {
     @Autowired
     private SystemLongzhouVoteRecordMapper longzhouVoteRecordMapper;
@@ -161,11 +161,11 @@ public class LongzhouVoteRecordServiceImpl implements ILongzhouVoteRecordService
             // 4. 更新队伍票数
             longzhouTeamMapper.increaseVoteCount(teamId);
             
+            // 🔧 修改：自动重新计算排名和显示顺序
+            longzhouTeamMapper.recalculateAllRankingsAndDisplayOrder();
+            
             return "投票成功";
             
-        } catch (org.springframework.dao.DuplicateKeyException e) {
-            // 处理唯一约束冲突
-            return "您今日已经为该作品投过票了";
         } catch (Exception e) {
             e.printStackTrace();
             // 确保返回非null的错误消息

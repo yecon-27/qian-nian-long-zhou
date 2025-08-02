@@ -10,6 +10,7 @@ interface TeamCard {
   title: string;
   author: string;
   votes: number;
+  originalVotes: number; // 新增：保存原始票数
   readCount: number;
   img: string;
   description: string;
@@ -43,6 +44,7 @@ export const useTeamsStore = defineStore("teams", () => {
           title: team.teamName,
           author: team.captainName || "未知",
           votes: team.totalVotes || 0,
+          originalVotes: team.totalVotes || 0, // 新增：保存原始票数
           readCount: team.viewCount || 0,
           // 处理RuoYi框架的文件上传路径
           img: team.teamImage
@@ -108,17 +110,17 @@ export const useTeamsStore = defineStore("teams", () => {
     if (!authStore.isAuthenticated) {
       return;
     }
-
+  
     const userId = authStore.user?.userId;
     if (!userId) {
       return;
     }
-
+  
     const team = teamCards.value.find((t) => t.id === teamId);
     if (!team) {
       return;
     }
-
+  
     try {
       if (team.voted) {
         // 取消投票
@@ -138,6 +140,13 @@ export const useTeamsStore = defineStore("teams", () => {
         team.votes++;
         team.voted = true;
       }
+      
+      // 🔧 新增：投票成功后更新排名到数据库
+      await updateRankingsToDatabase();
+      
+      // 🔧 新增：重新加载数据以获取最新排名
+      await loadTeams();
+      
     } catch (err: any) {
       const errorMessage = err.response?.data?.msg || err.message || "投票操作失败，请稍后重试";
       
@@ -146,16 +155,18 @@ export const useTeamsStore = defineStore("teams", () => {
         team.voted = true;
         return;
       }
-
+  
       throw err;
     }
   }
 
-  // 切换本地选中状态（不调用API）
+  // 切换本地选中状态（不调用API）- 基于原始票数的即时反馈
   function toggleLocalSelection(teamId: number) {
     const team = teamCards.value.find((t) => t.id === teamId);
     if (team) {
       team.selected = !team.selected;
+      // 基于原始票数计算显示票数
+      team.votes = team.originalVotes + (team.selected ? 1 : 0);
     }
   }
 
@@ -210,7 +221,7 @@ export const useTeamsStore = defineStore("teams", () => {
           throw new Error(data.msg || "投票失败");
         }
 
-        team.votes++;
+        // 只更新投票状态，不修改票数
         team.voted = true;
         team.selected = false; // 投票成功后取消选中状态
         successCount++;
@@ -228,6 +239,12 @@ export const useTeamsStore = defineStore("teams", () => {
     // 投票成功后，设置今日已投票状态
     if (successCount > 0) {
       hasVotedToday.value = true;
+      
+      // 🔧 可选：如果需要更新排名，可以调用
+      await updateRankingsToDatabase();
+      
+      // 🔧 不调用 loadTeams()，保持当前显示状态
+      // 票数将在下次页面刷新时从服务器同步
     }
 
     return successCount;
@@ -335,3 +352,39 @@ export const useTeamsStore = defineStore("teams", () => {
 //     throw err;
 //   }
 // }
+
+
+// 投票后更新排名到数据库
+const updateRankingsToDatabase = async () => {
+  try {
+    await teamApi.recalculateRankings();
+    console.log('✅ 排名已更新到数据库');
+  } catch (error) {
+    console.error('❌ 更新排名到数据库失败:', error);
+  }
+};
+
+// 修改投票方法，投票后自动更新排名
+const voteForTeam = async (teamId: number, userId: string) => {
+  try {
+    // 调用后端投票API
+    await teamApi.voteForTeam(teamId, userId);
+    
+    // 更新本地状态
+    const team = teamCards.value.find(t => t.id === teamId);
+    if (team) {
+      team.votes += 1;
+      team.voted = true;
+    }
+    
+    // 更新排名到数据库
+    await updateRankingsToDatabase();
+    
+    // 重新加载数据以获取最新排名
+    await loadTeams();
+    
+  } catch (error) {
+    console.error('投票失败:', error);
+    throw error;
+  }
+};

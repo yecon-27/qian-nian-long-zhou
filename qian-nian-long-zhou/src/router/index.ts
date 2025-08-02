@@ -82,10 +82,14 @@ const router = createRouter({
 
 // 全局前置守卫：处理认证和页面滚动
 router.beforeEach(async (to, from, next) => {
-  // 在路由切换时立即滚动到顶部
   window.scrollTo(0, 0);
   
   const authStore = useAuthStore();
+  
+  // 如果有token但用户信息未加载，等待初始化完成
+  if (authStore.token && !authStore.user) {
+    await authStore.initAuth();
+  }
   
   // 如果访问登录页面且已经登录，跳转到首页
   if (to.name === 'Login' && authStore.isAuthenticated) {

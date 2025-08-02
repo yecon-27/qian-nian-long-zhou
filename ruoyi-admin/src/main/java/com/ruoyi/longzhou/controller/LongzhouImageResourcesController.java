@@ -75,14 +75,18 @@ public class LongzhouImageResourcesController extends BaseController
     @GetMapping("/key/{resourceKey}")
     public AjaxResult getByResourceKey(@PathVariable("resourceKey") String resourceKey)
     {
-        LongzhouImageResources queryParam = new LongzhouImageResources();
-        queryParam.setResourceKey(resourceKey);
-        queryParam.setStatus("0"); // 只查询正常状态的资源
-        List<LongzhouImageResources> list = longzhouImageResourcesService.selectLongzhouImageResourcesList(queryParam);
-        if (list != null && !list.isEmpty()) {
-            return success(list.get(0));
+        try {
+            LongzhouImageResources queryParam = new LongzhouImageResources();
+            queryParam.setResourceKey(resourceKey);
+            queryParam.setStatus("0"); // 只查询正常状态的资源
+            List<LongzhouImageResources> list = longzhouImageResourcesService.selectLongzhouImageResourcesList(queryParam);
+            if (list != null && !list.isEmpty()) {
+                return success(list.get(0));
+            }
+            return error("图片资源不存在: " + resourceKey);
+        } catch (Exception e) {
+            return error("获取图片资源失败: " + e.getMessage());
         }
-        return error("图片资源不存在");
     }
 
     /**
@@ -91,12 +95,16 @@ public class LongzhouImageResourcesController extends BaseController
     @GetMapping("/category/{category}")
     public TableDataInfo getByCategory(@PathVariable("category") String category)
     {
-        LongzhouImageResources queryParam = new LongzhouImageResources();
-        queryParam.setCategory(category);
-        queryParam.setStatus("0"); // 只查询正常状态的资源
-        startPage();
-        List<LongzhouImageResources> list = longzhouImageResourcesService.selectLongzhouImageResourcesList(queryParam);
-        return getDataTable(list);
+        try {
+            LongzhouImageResources queryParam = new LongzhouImageResources();
+            queryParam.setCategory(category);
+            queryParam.setStatus("0"); // 只查询正常状态的资源
+            startPage();
+            List<LongzhouImageResources> list = longzhouImageResourcesService.selectLongzhouImageResourcesList(queryParam);
+            return getDataTable(list);
+        } catch (Exception e) {
+            return getDataTable(new java.util.ArrayList<>());
+        }
     }
 
     /**

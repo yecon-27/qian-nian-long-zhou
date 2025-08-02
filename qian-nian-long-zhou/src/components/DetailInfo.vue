@@ -133,7 +133,8 @@ export default {
             id: teamIdValue,
             title: teamDetail.teamName || teamDetail.title,
             author: teamDetail.captainName || teamDetail.teamLeader || teamDetail.author || '未知',
-            votes: teamDetail.totalVotes || teamDetail.votes || 0,
+            // 🔧 修复：优先使用store中的票数，如果store中没有则使用API返回的票数
+            votes: storeTeam ? storeTeam.votes : (teamDetail.totalVotes || teamDetail.votes || 0),
             readCount: teamDetail.viewCount || teamDetail.totalViews || teamDetail.readCount || 0,
             // 处理RuoYi框架的文件上传路径
             img: teamDetail.teamImage ?
@@ -197,7 +198,7 @@ export default {
     onMounted(async () => {
       // 确保store已加载
       if (teamsStore.teamCards.length === 0) {
-        await teamsStore.loadWorks()
+        await teamsStore.loadTeams() // 修改为 loadTeams
       }
 
       // 🔧 强制刷新用户投票状态
@@ -253,10 +254,11 @@ export default {
         // 切换本地选中状态（不调用API，只是标记选中）
         teamsStore.toggleLocalSelection(teamData.value.id)
         
-        // 🔧 立即同步更新本地teamData的selected状态
+        // 🔧 立即同步更新本地teamData的selected状态和票数
         const storeTeam = teamsStore.teamCards.find(t => t.id === teamData.value.id)
         if (storeTeam) {
           teamData.value.selected = storeTeam.selected
+          teamData.value.votes = storeTeam.votes // 新增：同步更新票数显示
         }
         
         // 显示简单的消息提示（移除弹窗和页面跳转）

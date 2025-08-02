@@ -2,7 +2,8 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { teamApi, voteApi, type TeamCard } from '@/api/team'
-import { mockApi } from '@/utils/mockData'
+import { voteApi } from '@/api/team'
+import { useAuthStore } from '@/stores/auth'
 
 // 检查是否使用Mock数据
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
@@ -58,34 +59,65 @@ export const useTeamsStore = defineStore('teams', () => {
 
   // 为队伍投票
   const voteForTeam = async (teamId: number) => {
-    if (hasVotedToday.value) {
-      throw new Error('今日已投票，请明天再来！')
+    const authStore = useAuthStore()
+    
+    // 检查登录状态
+    if (!authStore.isAuthenticated || !authStore.user?.userId) {
+      throw new Error('请先登录后再投票')
     }
 
     try {
       loading.value = true
-      await teamApi.voteForTeam(teamId)
       
-      // 更新本地状态
-      const team = teams.value.find(t => t.id === teamId)
-      if (team) {
-        team.voteCount += 1
+      // 调用后端API进行投票
+      const response = await teamApi.voteForTeam(teamId, authStore.user.userId.toString())
+      
+      if (response.code === 200) {
+        // 投票成功，更新本地状态
+        const team = teams.value.find(t => t.id === teamId)
+        if (team) {
+          team.voteCount += 1
+        }
+        
+        // 更新投票状态
+        hasVotedToday.value = true
+        
+        // 重新加载数据确保同步
+        await loadTeams()
+        
+        return true
+      } else {
+        throw new Error(response.msg || '投票失败')
       }
-      
-      hasVotedToday.value = true
-      
-      // 重新加载数据确保同步
-      await loadTeams()
-      
-      return true
     } catch (err: any) {
       error.value = err.message || '投票失败'
       console.error('投票失败:', err)
-      
-      // 如果后端不可用，使用本地逻辑
-      return voteForTeamLocal(teamId)
+      throw err
     } finally {
       loading.value = false
+    }
+  }
+
+  // 检查用户投票状态
+  const checkUserVoteStatus = async () => {
+    const authStore = useAuthStore()
+    
+    if (!authStore.isAuthenticated || !authStore.user?.userId) {
+      hasVotedToday.value = false
+      return
+    }
+
+    try {
+      const response = await voteApi.getUserVoteStatus(authStore.user.userId.toString())
+      
+      if (response.code === 200) {
+        const status = response.data
+        hasVotedToday.value = status.todayVoteCount >= status.dailyVoteLimit
+      }
+    } catch (err) {
+      console.error('检查投票状态失败:', err)
+      // 如果API调用失败，回退到本地检查
+      checkLocalVoteStatus()
     }
   }
 

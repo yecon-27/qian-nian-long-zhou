@@ -167,7 +167,9 @@ public class TeamController extends BaseController
             longzhouVoteRecordService.insertLongzhouVoteRecord(voteRecord);
             
             // 更新队伍投票数
+            // 更新队伍浏览数
             team.setTotalVotes(team.getTotalVotes() + 1);
+            team.setTodayVotes(team.getTodayVotes() + 1);  // 添加这一行
             longzhouTeamService.updateLongzhouTeam(team);
             
             return AjaxResult.success("投票成功");
@@ -234,5 +236,45 @@ public class TeamController extends BaseController
             ip = request.getRemoteAddr();
         }
         return ip;
+    }
+
+    /**
+     * 重新计算排名
+     * POST /api/teams/recalculate-rankings
+     * 用途：重新计算所有队伍的排名并存储到数据库
+     */
+    // @PostMapping("/recalculate-rankings")
+    // public AjaxResult recalculateRankings()
+    // {
+    //     try {
+    //         int result = longzhouTeamService.recalculateAllRankings();
+    //         if (result > 0) {
+    //             return AjaxResult.success("排名更新成功");
+    //         } else {
+    //             return AjaxResult.error("排名更新失败");
+    //         }
+    //     } catch (Exception e) {
+    //         return AjaxResult.error("排名更新异常: " + e.getMessage());
+    //     }
+    // }
+    
+    /**
+     * 重新计算排名和显示顺序
+     * POST /api/teams/recalculate-rankings-and-display-order
+     * 用途：重新计算所有队伍的排名和显示顺序并存储到数据库
+     */
+    @PostMapping("/recalculate-rankings-and-display-order")
+    public AjaxResult recalculateRankingsAndDisplayOrder()
+    {
+        try {
+            int result = longzhouTeamService.recalculateAllRankingsAndDisplayOrder();
+            if (result > 0) {
+                return AjaxResult.success("排名和显示顺序更新成功");
+            } else {
+                return AjaxResult.error("排名和显示顺序更新失败");
+            }
+        } catch (Exception e) {
+            return AjaxResult.error("排名和显示顺序更新异常: " + e.getMessage());
+        }
     }
 }

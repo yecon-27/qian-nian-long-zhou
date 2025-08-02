@@ -143,4 +143,26 @@ public class LongzhouTeamServiceImpl implements ILongzhouTeamService
             }
         }
     }
+
+    /**
+     * 批量更新队伍排名
+     * 
+     * @param teams 队伍列表
+     * @return 结果
+     */
+    public int updateTeamRankings(List<SystemLongzhouTeam> teams)
+    {
+        return longzhouTeamMapper.updateTeamRankings(teams);
+    }
+
+    /**
+     * 重新计算并更新所有队伍排名和显示顺序
+     * 
+     * @return 结果
+     */
+    @Override
+    public int recalculateAllRankingsAndDisplayOrder()
+    {
+        return longzhouTeamMapper.recalculateAllRankingsAndDisplayOrder();
+    }
 }
