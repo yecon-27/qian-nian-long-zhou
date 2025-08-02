@@ -2,7 +2,8 @@
 
 ## 项目简介
 
-这是一个基于 SpringBoot + Vue 3 的全栈龙舟队伍投票系统，用户可以为不同的龙舟队伍投票，并查看实时排行榜。项目采用前后端分离架构，后端基于若依（RuoYi）框架构建，提供完整的用户管理、权限控制和数据持久化功能。
+这是一个基于 SpringBoot + Vue 3 的移动端全栈龙舟队伍投票系统，用户可以为不同的龙舟队伍投票，并查看实时排行榜。项目采用前后端分离架构，后端基于若依（RuoYi）框架构建，提供完整的用户管理、权限控制和数据持久化功能。
+![3bec9fbeec3cd8fbd514d2db3699f8c](https://github.com/user-attachments/assets/c576c689-01f5-4cf4-b7da-ca6ea25a901f)
 
 ## 技术栈
 
@@ -24,42 +25,31 @@
 - **MySQL** - 数据库
 - **Redis** - 缓存
 
-## ✅ 项目进度
+##  项目进度
 
-- ✅ **前端开发** - Vue 3 前端应用已完成
-- ✅ **前端部署** - Vercel 部署配置已完成
-- ✅ **后端开发** - 基于若依框架的 SpringBoot 后端已完成
-- ✅ **后端部署** - 后端 API 接口部署配置已完成
-- ✅ **全栈集成** - 前后端接口联调已完成
-- ✅ **项目完成** - 全栈龙舟投票系统开发完成
+- `7.14-7.16`- **前端开发** - Vue 3 前端应用
+- `7.24`- **前端部署** - Vercel 部署配置已完成
+- `7.24`- **SQL数据库表4张主表生成** 
+- `7.25-7.28`- **后端部署** - 后端 API 接口部署配置已完成
+- `7.28-8.1` **全栈集成** - 前后端接口联调已完成
+-  `未来` - **前后端上线云服务器**
 
-## 📚 文档导航
-
-完整的项目文档请查看 [docs/README.md](./docs/README.md)
-
-### 快速链接
-
-- [安装指南](./docs/setup/installation.md) - 项目安装和配置
-- [开发环境配置](./docs/setup/development.md) - 开发环境设置
-- [投票系统说明](./docs/business/voting-system.md) - 业务功能介绍
-- [组件开发指南](./docs/frontend/component-guide.md) - 前端开发规范
-- [问题排查](./docs/development/troubleshooting.md) - 常见问题解决
-
-### 部署文档
-
-- [完整部署指南](./docs/VERCEL_DEPLOYMENT_COMPLETE_GUIDE.md) - Vercel 部署完整流程
-- [部署检查清单](./docs/DEPLOYMENT_CHECKLIST.md) - 部署前后检查项目
-- [故障排除快速参考](./docs/DEPLOYMENT_TROUBLESHOOTING_QUICK_REFERENCE.md) - 常见部署问题解决
-- [环境变量配置](./docs/vercel-environment-setup.md) - 详细环境变量设置
 
 ## 核心功能
 
 - **投票系统** - 每日限制投票，实时更新票数
 - **排行榜** - 基于票数的实时排名展示
-- **详情页面** - 队伍信息、统计数据展示
+- **详情页面** - 队伍信息、统计数据（浏览量实时更新）展示
 - **搜索功能** - 支持队伍名称和作者搜索
 - **响应式设计** - 移动端和桌面端适配
 - **管理后台** - 基于若依框架的完整管理系统
+- **匿名用户** - 可免登录查看排行榜与规则
+- **拓展性** - 图片信息可更新替换
+  
+ <img src="https://github.com/user-attachments/assets/1289c5e5-f77f-49b0-84a8-8cd3a9fbe542" width ="200">
+ <img src="https://github.com/user-attachments/assets/2a0e9c27-a7d2-4f7f-a428-c84bd08fb66b" width ="200">
+ <img src="https://github.com/user-attachments/assets/c3df6fe7-4d02-4312-9a1b-0bba9b16a97c" width ="200">
+ <img src="https://github.com/user-attachments/assets/981add77-4450-4afa-843c-96b9149eeb19" width ="200">
 
 ## 🚀 快速启动
 
@@ -72,16 +62,9 @@
 - **Maven**: 3.6 或以上版本
 
 ### 1. 数据库配置
+1. 数据库表：`
 
-1. 创建 MySQL 数据库
-2. 导入 SQL 文件：
-   ```bash
-   # 导入基础数据
-   mysql -u root -p your_database < sql/ry_20250522.sql
-   # 导入龙舟相关表
-   mysql -u root -p your_database < sql/longzhou_team.sql
-   mysql -u root -p your_database < sql/longzhou_vote.sql
-   ```
+![数据库表](https://github.com/user-attachments/assets/b6da8314-b96f-4db2-88b2-fd9626c4de78)
 
 ### 2. 后端启动（Spring Boot + 若依框架）
 
@@ -163,6 +146,7 @@ npm run build
 ├── pom.xml                       # Maven 主配置文件
 ├── ry.bat                        # 后端启动脚本（Windows）
 ├── ry.sh                         # 后端启动脚本（Linux/Mac）
+├── backend-sql                   # MySQL数据库表
 ├── bin/                          # 批处理脚本目录
 │   ├── clean.bat                 # 清理脚本
 │   ├── package.bat               # 打包脚本
@@ -217,7 +201,22 @@ npm run build
 ├── ruoyi-quartz/                 # 定时任务模块
 └── ruoyi-system/                 # 系统模块
 ```
+## 📚 文档导航
 
+### 快速链接
+
+- [安装指南](./docs/setup/installation.md) - 项目安装和配置
+- [开发环境配置](./docs/setup/development.md) - 开发环境设置
+- [投票系统说明](./docs/business/voting-system.md) - 业务功能介绍
+- [组件开发指南](./docs/frontend/component-guide.md) - 前端开发规范
+- [问题排查](./docs/development/troubleshooting.md) - 常见问题解决
+
+### 部署文档
+
+- [完整部署指南](./docs/VERCEL_DEPLOYMENT_COMPLETE_GUIDE.md) - Vercel 部署完整流程
+- [部署检查清单](./docs/DEPLOYMENT_CHECKLIST.md) - 部署前后检查项目
+- [故障排除快速参考](./docs/DEPLOYMENT_TROUBLESHOOTING_QUICK_REFERENCE.md) - 常见部署问题解决
+- [环境变量配置](./docs/vercel-environment-setup.md) - 详细环境变量设置
 
 ## 🔧 开发工具脚本
 
@@ -240,9 +239,6 @@ npm run build
 详细的技术实现和开发指南请参考 [完整文档](./qian-nian-long-zhou/docs/README.md)。
 
 ---
-
-**作者**: yecon-27  
-**最后更新**: 2025 年 8 月 1 日  
-**技术栈**: Vue 3 + TypeScript + Pinia + Vite
+***最后更新***: 2025 年 8 月 1 日  
 ---
 
