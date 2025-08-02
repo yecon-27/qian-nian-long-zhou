@@ -1,3 +1,5 @@
+🌐 语言切换 | Language Switch: [English](./README.en.md) | [中文](./README.md)
+
 # 千年龙舟创意新生 - 龙舟队伍投票系统
 
 ## 项目简介
