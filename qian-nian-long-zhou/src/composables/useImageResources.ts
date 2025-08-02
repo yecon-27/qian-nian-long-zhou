@@ -22,6 +22,7 @@ export function useImageResources() {
    * @param fallbackUrl 备用图片URL
    * @returns 图片URL
    */
+  // 在 getImageUrl 方法中添加URL处理
   const getImageUrl = async (
     resourceKey: string,
     fallbackUrl?: string
@@ -38,7 +39,12 @@ export function useImageResources() {
       const response = await getImageResourceByKey(resourceKey) as any;
       
       if (response.code === 200 && response.data) {
-        const imageUrl = response.data.fileUrl;
+        let imageUrl = response.data.fileUrl;
+        
+        // 处理相对路径，添加后端服务器地址
+        if (imageUrl.startsWith('/image/')) {
+          imageUrl = `http://localhost:8080${imageUrl}`;
+        }
         
         // 缓存结果
         imageResourceCache[resourceKey] = imageUrl;
