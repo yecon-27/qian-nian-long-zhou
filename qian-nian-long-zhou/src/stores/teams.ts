@@ -183,40 +183,37 @@ export const useTeamsStore = defineStore("teams", () => {
     if (!authStore.isAuthenticated) {
       throw new Error("用户未登录");
     }
-
+  
     const userId = authStore.user?.userId;
     if (!userId) {
       throw new Error("无法获取用户ID");
     }
-
+  
     const selectedTeams = teamCards.value.filter(
       (team) => team.selected && !team.voted
     );
     if (selectedTeams.length === 0) {
       throw new Error("请选择要投票的队伍");
     }
-
+  
     if (selectedTeams.length > 3) {
       throw new Error("最多只能选择3个队伍进行投票");
     }
-
+  
     // 检查用户是否已经投过票
     if (hasVotedToday.value) {
       throw new Error("您今日已经投过票了，每人每天只能投票一次");
     }
-
+  
     let successCount = 0;
     const errors: string[] = [];
-
-    // 在文件顶部添加导入
-   
-    // 修改 submitVotes 函数中的投票逻辑
+  
+    // 执行投票
     for (const team of selectedTeams) {
       try {
-        // 使用正确的API调用，会自动通过代理
         const response = await vote({
           userId: String(userId),
-          workId: team.id  // 注意：后端使用workId
+          workId: team.id
         })
         
         // 投票成功处理
@@ -226,25 +223,24 @@ export const useTeamsStore = defineStore("teams", () => {
       } catch (err: any) {
         const errorMsg = err.message || "投票失败";
         errors.push(`${team.title}: ${errorMsg}`);
-        console.error(`队伍 ${team.title} 投票失败:`, err);
       }
     }
-
+  
     if (errors.length > 0) {
       throw new Error(`部分投票失败: ${errors.join("; ")}`);
     }
-
-    // 投票成功后，设置今日已投票状态
+  
+    // 投票成功后的处理
     if (successCount > 0) {
       hasVotedToday.value = true;
       
-      // 🔧 可选：如果需要更新排名，可以调用
-      await updateRankingsToDatabase();
+      // 🔧 关键修改：立即重新加载数据以获取最新票数
+      await loadTeams();
       
-      // 🔧 不调用 loadTeams()，保持当前显示状态
-      // 票数将在下次页面刷新时从服务器同步
+      // 🔧 可选：更新排名到数据库
+      await updateRankingsToDatabase();
     }
-
+  
     return successCount;
   }
 
