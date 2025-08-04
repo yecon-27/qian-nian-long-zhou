@@ -115,6 +115,15 @@ service.interceptors.response.use(
     if (code === 401) {
       if (!isRelogin.show) {
         isRelogin.show = true;
+        
+        // 立即清除无效的token和用户信息
+        store.dispatch("LogOut").then(() => {
+          // 确保清除所有认证相关的缓存
+          localStorage.removeItem('token');
+          localStorage.removeItem('userInfo');
+          sessionStorage.clear();
+        });
+        
         MessageBox.confirm(
           "登录状态已过期，您可以继续留在该页面，或者重新登录",
           "系统提示",
@@ -126,9 +135,7 @@ service.interceptors.response.use(
         )
           .then(() => {
             isRelogin.show = false;
-            store.dispatch("LogOut").then(() => {
-              location.href = "/index";
-            });
+            location.href = "/index";
           })
           .catch(() => {
             isRelogin.show = false;

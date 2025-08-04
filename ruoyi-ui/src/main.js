@@ -35,8 +35,41 @@ import ImagePreview from "@/components/ImagePreview"
 import DictTag from '@/components/DictTag'
 // 字典数据组件
 import DictData from '@/components/DictData'
+import { getToken, isTokenExpiringSoon, removeToken } from '@/utils/auth'
+import { MessageBox } from 'element-ui'
 
-// 全局方法挂载
+// 定时检查token状态
+setInterval(() => {
+  const token = getToken()
+  
+  // 如果没有token，跳过检查
+  if (!token) return
+  
+  // 检查token是否即将过期
+  if (isTokenExpiringSoon()) {
+    MessageBox.confirm(
+      '您的登录状态即将过期，是否继续保持登录？',
+      '登录提醒',
+      {
+        confirmButtonText: '继续登录',
+        cancelButtonText: '退出登录',
+        type: 'warning'
+      }
+    ).then(() => {
+      // 用户选择继续登录，刷新token（需要调用后端接口）
+      store.dispatch('GetInfo').catch(() => {
+        // 如果刷新失败，清除token
+        store.dispatch('FedLogOut')
+        location.reload()
+      })
+    }).catch(() => {
+      // 用户选择退出登录
+      store.dispatch('FedLogOut')
+      location.reload()
+    })
+  }
+}, 5 * 60 * 1000) // 每5分钟检查一次
+
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
 Vue.prototype.parseTime = parseTime

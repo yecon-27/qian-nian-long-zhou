@@ -49,9 +49,10 @@ const user = {
       const uuid = userInfo.uuid
       return new Promise((resolve, reject) => {
         login(username, password, code, uuid).then(res => {
-          console.log('Login response:', res) // 添加调试日志
+          console.log('Login response:', res)
           if (res && res.token) {
-            setToken(res.token)
+            // 设置token，默认24小时过期
+            setToken(res.token, 24)
             commit('SET_TOKEN', res.token)
             resolve()
           } else {
@@ -60,6 +61,8 @@ const user = {
           }
         }).catch(error => {
           console.error('Login error:', error)
+          // 登录失败时清除可能存在的无效token
+          removeToken()
           reject(error)
         })
       })
@@ -110,10 +113,15 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           commit('SET_PERMISSIONS', [])
-          removeToken()
+          removeToken() // 使用增强的removeToken方法
           resolve()
         }).catch(error => {
-          reject(error)
+          // 即使后端登出失败，也要清除本地token
+          commit('SET_TOKEN', '')
+          commit('SET_ROLES', [])
+          commit('SET_PERMISSIONS', [])
+          removeToken()
+          resolve() // 改为resolve，避免阻塞登出流程
         })
       })
     },
@@ -122,7 +130,7 @@ const user = {
     FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
-        removeToken()
+        removeToken() // 使用增强的removeToken方法
         resolve()
       })
     }

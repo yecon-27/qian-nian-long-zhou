@@ -3,7 +3,7 @@ import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth'
 import { isPathMatch } from '@/utils/validate'
 import { isRelogin } from '@/utils/request'
 
@@ -15,7 +15,16 @@ const isWhiteList = (path) => {
   return whiteList.some(pattern => isPathMatch(pattern, path))
 }
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  // 检查token有效性
+  const token = getToken()
+  
+  if (token) {
+    // 如果getToken返回null（说明token已过期），清理store状态
+    if (!token) {
+      await store.dispatch('FedLogOut')
+    }
+  }
   NProgress.start()
   if (getToken()) {
     to.meta.title && store.dispatch('settings/setTitle', to.meta.title)
