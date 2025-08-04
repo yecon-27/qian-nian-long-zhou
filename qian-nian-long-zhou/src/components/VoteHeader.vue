@@ -37,7 +37,34 @@
         <DynamicImage resource-key="ranking_icon" alt="排行" />
       </button>
     </div>
-  </div>
+    </div>
+
+    <!-- 退出确认对话框 -->
+    <van-dialog
+      v-model:show="showLogoutDialog"
+      title="确认退出"
+      message="确定要退出登录吗？"
+      :show-cancel-button="true"
+      :close-on-click-overlay="false"
+    >
+      <template #footer>
+        <div class="custom-dialog-footer">
+          <van-button 
+            type="primary" 
+            @click="confirmLogout"
+            class="confirm-btn"
+          >
+            确定
+          </van-button>
+          <van-button 
+            @click="cancelLogout"
+            class="cancel-btn"
+          >
+            取消
+          </van-button>
+        </div>
+      </template>
+    </van-dialog>
 
 </template>
 
@@ -68,33 +95,33 @@ const goToLogin = () => {
     query: { redirect: '/vote' }
   })
 }
+const showLogoutDialog = ref(false)
 
-const handleLogout = async () => {
+const handleLogout = () => {
+  // 直接显示对话框，不使用 showDialog 函数
+  showLogoutDialog.value = true
+}
+
+const confirmLogout = async () => {
   try {
-    await showDialog({
-      title: '确认退出',
-      message: '确定要退出登录吗？',
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
-    })
-
     await authStore.logout()
     showToast({
       type: 'success',
       message: '已退出登录'
     })
-
-    // 退出后跳转到首页
     router.push('/')
   } catch (error) {
-    // 用户取消或退出失败
-    if (error !== 'cancel') {
-      showToast({
-        type: 'fail',
-        message: '退出失败'
-      })
-    }
+    showToast({
+      type: 'fail',
+      message: '退出失败'
+    })
+  } finally {
+    showLogoutDialog.value = false
   }
+}
+
+const cancelLogout = () => {
+  showLogoutDialog.value = false
 }
 </script>
 
@@ -227,7 +254,47 @@ const handleLogout = async () => {
   --van-button-primary-background: #1989fa;
   --van-button-primary-border-color: #1989fa;
 }
+/* 自定义对话框样式 */
+:deep(.van-dialog) {
+  max-height: 300px; /* 限制对话框最大高度 */
+  min-height: 200px; /* 设置最小高度 */
+}
 
+:deep(.van-dialog__content) {
+  padding-bottom: 8px; /* 减少内容区域底部padding */
+}
+
+/* 自定义对话框底部样式 */
+.custom-dialog-footer {
+  display: flex;
+  gap: 16px;
+  padding: 8px 24px 20px 24px; /* 减少顶部padding，增加底部padding */
+  justify-content: center;
+  margin-top: -10px; /* 负边距让按钮更靠上 */
+}
+
+.confirm-btn {
+  flex: 1;
+  min-width: 120px;
+  height: 44px;
+  --van-button-primary-background: rgb(250, 130, 25);
+  --van-button-primary-border-color:rgb(250, 130, 25);
+  --van-button-border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.cancel-btn {
+  flex: 1;
+  min-width: 120px;
+  height: 44px;
+  --van-button-default-background: #f5f5f5;
+  --van-button-default-border-color: #d9d9d9;
+  --van-button-default-color: #666;
+  --van-button-border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
 /* 按钮容器定位 */
 .right-buttons {
   position: fixed;
@@ -240,3 +307,4 @@ const handleLogout = async () => {
   z-index: 10;
 }
 </style>
+

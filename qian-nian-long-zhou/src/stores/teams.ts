@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import { teamApi } from "@/api/team";
 import { vote, cancelVote, getUserVoteStatus } from "@/api/vote"; // 添加正确的投票API导入
 import { useAuthStore } from "./auth"; // 引入 auth store
-
 // 定义队伍数据接口
 interface TeamCard {
   id: number;
@@ -209,29 +208,20 @@ export const useTeamsStore = defineStore("teams", () => {
     let successCount = 0;
     const errors: string[] = [];
 
+    // 在文件顶部添加导入
+   
+    // 修改 submitVotes 函数中的投票逻辑
     for (const team of selectedTeams) {
       try {
-        // 调用投票API
-        const response = await fetch(
-          `http://localhost:8080/api/teams/${team.id}/vote`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "User-ID": String(userId),
-            },
-          }
-        );
-
-        const data = await response.json();
-
-        if (data.code !== 200) {
-          throw new Error(data.msg || "投票失败");
-        }
-
-        // 只更新投票状态，不修改票数
+        // 使用正确的API调用，会自动通过代理
+        const response = await vote({
+          userId: String(userId),
+          workId: team.id  // 注意：后端使用workId
+        })
+        
+        // 投票成功处理
         team.voted = true;
-        team.selected = false; // 投票成功后取消选中状态
+        team.selected = false;
         successCount++;
       } catch (err: any) {
         const errorMsg = err.message || "投票失败";
