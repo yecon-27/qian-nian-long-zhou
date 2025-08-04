@@ -31,7 +31,8 @@ module.exports = {
   // webpack-dev-server 相关配置
   devServer: {
     host: '0.0.0.0',
-    port: port,
+    public: 'http://172.16.100.197:3000',  // 改为3000端口
+    port: 3000,  // 前端服务端口改为3000
     open: true,
     proxy: {
       // detail: https://cli.vuejs.org/config/#devserver-proxy

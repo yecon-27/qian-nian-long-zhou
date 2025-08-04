@@ -36,14 +36,22 @@ export default defineConfig({
   },
   base: '/', // 改为绝对路径
   server: {
-    host: true,
+    host: '0.0.0.0',
+    port: 5173,
     proxy: {
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
-      }, // ✅ 添加缺少的逗号
-      // 移除 /image 代理，因为生产环境不需要
+      },
+      '/image': {
+        target: 'http://localhost:8080',
+        changeOrigin: true
+      },
+      '/longzhou': {
+        target: 'http://localhost:8080',
+        changeOrigin: true
+      }
     }
   },
   test: {

@@ -45,7 +45,7 @@ const handleSearch = (keyword: string) => {
   searchKeyword.value = keyword
 }
 
-const toggleVote = (id: number) => { // 明确指定参数类型
+const toggleVote = (id: number) => {
   // 如果用户已经投过票，则不允许再选择
   if (teamsStore.hasVotedToday) {
     showToast({
@@ -55,8 +55,15 @@ const toggleVote = (id: number) => { // 明确指定参数类型
     return
   }
   
-  // 只切换本地选中状态，不调用API
-  teamsStore.toggleLocalSelection(id)
+  try {
+    // 只切换本地选中状态，不调用API
+    teamsStore.toggleLocalSelection(id)
+  } catch (error: any) {
+    showToast({
+      type: 'fail',
+      message: error.message || '选择失败'
+    })
+  }
 }
 
 const handleSubmit = async (selectedCount: number) => {

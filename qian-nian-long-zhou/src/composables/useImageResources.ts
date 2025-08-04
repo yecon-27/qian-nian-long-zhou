@@ -41,9 +41,10 @@ export function useImageResources() {
       if (response.code === 200 && response.data) {
         let imageUrl = response.data.fileUrl;
         
-        // 处理相对路径，添加后端服务器地址
+        // 处理相对路径，直接返回相对路径让代理处理
         if (imageUrl.startsWith('/image/')) {
-          imageUrl = `http://localhost:8080${imageUrl}`;
+          // 直接使用相对路径，让vite代理转发
+          // 不需要添加主机地址
         }
         
         // 缓存结果

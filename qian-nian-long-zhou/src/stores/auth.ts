@@ -91,6 +91,18 @@ export const useAuthStore = defineStore('auth', () => {
         await getUserInfo()
       }
       
+      // 在现有的 login 函数中，在 return true 之前添加：
+      
+      // 登录成功后清除之前的选择状态
+      try {
+        // 动态导入避免循环依赖
+        const { useTeamsStore } = await import('./teams');
+        const teamsStore = useTeamsStore();
+        teamsStore.clearSelections();
+      } catch (error) {
+        console.warn('清除投票选择状态失败:', error);
+      }
+      
       return true
     } catch (error: any) {
       throw new Error(error.message || '登录失败')
@@ -144,6 +156,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // 登出
+  // 登出
   const logout = async () => {
     try {
       if (token.value) {
@@ -156,6 +169,17 @@ export const useAuthStore = defineStore('auth', () => {
       token.value = null
       user.value = null
       localStorage.removeItem('token')
+      localStorage.removeItem('userInfo') // 也清除用户信息缓存
+      
+      // 清除teams store的选择状态
+      try {
+        // 动态导入避免循环依赖
+        const { useTeamsStore } = await import('./teams');
+        const teamsStore = useTeamsStore();
+        teamsStore.clearSelections();
+      } catch (error) {
+        console.warn('清除投票选择状态失败:', error);
+      }
     }
   }
 

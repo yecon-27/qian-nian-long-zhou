@@ -49,7 +49,7 @@ export const useTeamsStore = defineStore("teams", () => {
           // 处理RuoYi框架的文件上传路径
           img: team.teamImage
             ? team.teamImage.startsWith("/profile/upload")
-              ? `http://localhost:8080${team.teamImage}`
+              ? `http://${window.location.hostname}:8080${team.teamImage}`
               : team.teamImage
             : "", // 空字符串，完全依赖数据库
           description: team.description || "",
@@ -163,11 +163,19 @@ export const useTeamsStore = defineStore("teams", () => {
   // 切换本地选中状态（不调用API）- 基于原始票数的即时反馈
   function toggleLocalSelection(teamId: number) {
     const team = teamCards.value.find((t) => t.id === teamId);
-    if (team) {
-      team.selected = !team.selected;
-      // 基于原始票数计算显示票数
-      team.votes = team.originalVotes + (team.selected ? 1 : 0);
+    if (!team) return;
+    
+    // 如果要选中队伍，检查是否超过限制
+    if (!team.selected) {
+      const currentSelectedCount = teamCards.value.filter(t => t.selected).length;
+      if (currentSelectedCount >= 3) {
+        throw new Error("最多只能选择3个队伍进行投票");
+      }
     }
+    
+    team.selected = !team.selected;
+    // 基于原始票数计算显示票数
+    team.votes = team.originalVotes + (team.selected ? 1 : 0);
   }
 
   // 批量提交投票
@@ -289,6 +297,15 @@ export const useTeamsStore = defineStore("teams", () => {
     return false;
   };
 
+  // 清除所有选择状态
+  function clearSelections() {
+    teamCards.value.forEach((team) => {
+      team.selected = false;
+      // 恢复到原始票数
+      team.votes = team.originalVotes;
+    });
+  }
+
   return {
     // 数据
     teamCards,
@@ -296,7 +313,7 @@ export const useTeamsStore = defineStore("teams", () => {
     loading,
     error,
     hasVotedToday, // 暴露投票状态
-
+  
     // 方法
     loadTeams, // 改为 loadTeams 而不是 loadWorks
     loadUserVoteStatus,
@@ -307,7 +324,8 @@ export const useTeamsStore = defineStore("teams", () => {
     getTeamById,
     getTeamRank,
     checkNewDay,
-
+    clearSelections, // 新增清除选择状态方法
+  
     // 计算属性
     rankedCards,
     selectedCardsCount,
@@ -371,7 +389,7 @@ const voteForTeam = async (teamId: number, userId: string) => {
     await teamApi.voteForTeam(teamId, userId);
     
     // 更新本地状态
-    const team = teamCards.value.find(t => t.id === teamId);
+    const team = useTeamsStore().teamCards.find(t => t.id === teamId);
     if (team) {
       team.votes += 1;
       team.voted = true;
@@ -381,7 +399,7 @@ const voteForTeam = async (teamId: number, userId: string) => {
     await updateRankingsToDatabase();
     
     // 重新加载数据以获取最新排名
-    await loadTeams();
+    await useTeamsStore().loadTeams();
     
   } catch (error) {
     console.error('投票失败:', error);

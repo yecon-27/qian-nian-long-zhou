@@ -139,13 +139,13 @@ export default {
             // 处理RuoYi框架的文件上传路径
             img: teamDetail.teamImage ?
               (teamDetail.teamImage.startsWith('/profile/upload') ?
-                `http://localhost:8080${teamDetail.teamImage}` :
+                `http://${window.location.hostname}:8080${teamDetail.teamImage}` :
                 teamDetail.teamImage) :
-              (teamDetail.img ?
-                (teamDetail.img.startsWith('/profile/upload') ?
-                  `http://localhost:8080${teamDetail.img}` :
-                  teamDetail.img) :
-                '/src/assets/详情/龙舟队伍配图.jpg'),
+            (teamDetail.img ?
+              (teamDetail.img.startsWith('/profile/upload') ?
+                `http://${window.location.hostname}:8080${teamDetail.img}` :
+                teamDetail.img) :
+              '/src/assets/详情/龙舟队伍配图.jpg'),
             description: teamDetail.description || teamDetail.teamDescription || '暂无描述',
             status: teamDetail.status || 1,
             // 🔧 修复：从store中获取正确的投票状态，而不是总是设置为false
