@@ -7,7 +7,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="LongzhouViewRecord" id="LongzhouViewRecordResult">
         <result property="viewId"    column="view_id"    />
         <result property="teamId"    column="team_id"    />
-        <result property="userId"    column="user_id"    />
+        <result property="userName"  column="user_name"  />
+        <result property="teamName"  column="team_name"  />
         <result property="userIp"    column="user_ip"    />
         <result property="viewDate"    column="view_date"    />
         <result property="viewTime"    column="view_time"    />
@@ -22,20 +23,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectLongzhouViewRecordVo">
-        select view_id, team_id, user_id, user_ip, view_date, view_time, view_duration, page_type, referrer, user_agent, device_type, browser_type, session_id, create_time from longzhou_view_record
+        select v.view_id, v.team_id, v.user_id, v.user_ip, v.view_date, v.view_time, 
+               v.view_duration, v.page_type, v.referrer, v.user_agent, v.device_type, 
+               v.browser_type, v.session_id, v.create_time,
+               u.user_name, u.nick_name, t.team_name
+        from longzhou_view_record v
+        left join sys_user u on v.user_id = u.user_id
+        left join longzhou_team t on v.team_id = t.team_id
     </sql>
 
     <select id="selectLongzhouViewRecordList" parameterType="LongzhouViewRecord" resultMap="LongzhouViewRecordResult">
         <include refid="selectLongzhouViewRecordVo"/>
         <where>  
-            <if test="teamId != null "> and team_id = #{teamId}</if>
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="userIp != null  and userIp != ''"> and user_ip = #{userIp}</if>
-            <if test="viewDate != null "> and view_date = #{viewDate}</if>
-            <if test="pageType != null  and pageType != ''"> and page_type = #{pageType}</if>
-            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
-            <if test="browserType != null  and browserType != ''"> and browser_type = #{browserType}</if>
-            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+            <if test="teamId != null "> and v.team_id = #{teamId}</if>
+            <if test="teamName != null and teamName != ''"> and t.team_name like concat('%', #{teamName}, '%')</if>
+            <if test="userId != null "> and v.user_id = #{userId}</if>
+            <if test="userName != null and userName != ''"> and u.user_name like concat('%', #{userName}, '%')</if>
+            <if test="userIp != null  and userIp != ''"> and v.user_ip = #{userIp}</if>
+            <if test="viewDate != null "> and v.view_date = #{viewDate}</if>
+            <if test="pageType != null  and pageType != ''"> and v.page_type = #{pageType}</if>
+            <if test="deviceType != null  and deviceType != ''"> and v.device_type = #{deviceType}</if>
+            <if test="browserType != null  and browserType != ''"> and v.browser_type = #{browserType}</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and v.create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
         </where>
     </select>
     

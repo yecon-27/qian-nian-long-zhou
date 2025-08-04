@@ -13,8 +13,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author Cong
  * @date 2025-07-25
  */
-public class LongzhouVoteRecord extends BaseEntity
-{
+public class LongzhouVoteRecord extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 投票记录ID */
@@ -146,5 +145,27 @@ public class LongzhouVoteRecord extends BaseEntity
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .toString();
+    }
+    
+    /** 用户名 */
+    private String userName;
+    
+    /** 队伍名称 */
+    private String teamName;
+    
+    public String getUserName() {
+        return userName;
+    }
+    
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
+    public String getTeamName() {
+        return teamName;
+    }
+    
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }

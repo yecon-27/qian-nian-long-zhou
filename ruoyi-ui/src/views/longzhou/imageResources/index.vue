@@ -17,22 +17,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="后端文件路径" prop="filePath">
-        <el-input
-          v-model="queryParams.filePath"
-          placeholder="请输入后端文件路径"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="访问URL路径" prop="fileUrl">
-        <el-input
-          v-model="queryParams.fileUrl"
-          placeholder="请输入访问URL路径"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -87,14 +71,9 @@
 
     <el-table v-loading="loading" :data="imageResourcesList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="资源ID" align="center" prop="resourceId" />
       <el-table-column label="资源名称" align="center" prop="resourceName" />
       <el-table-column label="资源键值" align="center" prop="resourceKey" />
       <el-table-column label="文件名" align="center" prop="fileName" />
-      <el-table-column label="后端文件路径" align="center" prop="filePath" />
-      <el-table-column label="访问URL路径" align="center" prop="fileUrl" />
-      <el-table-column label="文件大小" align="center" prop="fileSize" />
-      <el-table-column label="文件类型" align="center" prop="fileType" />
       <el-table-column label="分类" align="center" prop="category" />
       <el-table-column label="描述" align="center" prop="description">
         <template slot-scope="scope">
@@ -106,8 +85,6 @@
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="显示顺序" align="center" prop="sortOrder" />
-      <el-table-column label="创建者" align="center" prop="createBy" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -153,20 +130,23 @@
         <el-form-item label="文件名" prop="fileName">
           <file-upload v-model="form.fileName"/>
         </el-form-item>
-        <el-form-item label="后端文件路径" prop="filePath">
-          <el-input v-model="form.filePath" placeholder="请输入后端文件路径" />
-        </el-form-item>
-        <el-form-item label="访问URL路径" prop="fileUrl">
-          <el-input v-model="form.fileUrl" placeholder="请输入访问URL路径" />
-        </el-form-item>
-        <el-form-item label="文件大小" prop="fileSize">
-          <el-input v-model="form.fileSize" placeholder="请输入文件大小" />
+        <el-form-item label="分类" prop="category">
+          <el-select v-model="form.category" placeholder="请选择分类">
+            <el-option label="首页" value="home"></el-option>
+            <el-option label="投票" value="vote"></el-option>
+            <el-option label="排行榜" value="ranking"></el-option>
+            <el-option label="规则" value="rules"></el-option>
+            <el-option label="详情" value="detail"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model="form.description" type="textarea" placeholder="请输入内容" />
         </el-form-item>
-        <el-form-item label="显示顺序" prop="sortOrder">
-          <el-input v-model="form.sortOrder" placeholder="请输入显示顺序" />
+        <el-form-item label="状态" prop="status">
+          <el-radio-group v-model="form.status">
+            <el-radio label="0">正常</el-radio>
+            <el-radio label="1">停用</el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -210,9 +190,6 @@ export default {
         resourceName: null,
         resourceKey: null,
         fileName: null,
-        filePath: null,
-        fileUrl: null,
-        fileType: null,
         category: null,
         description: null,
         status: null,
@@ -221,9 +198,6 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        resourceId: [
-          { required: true, message: "资源ID不能为空", trigger: "blur" }
-        ],
         resourceName: [
           { required: true, message: "资源名称不能为空", trigger: "blur" }
         ],
@@ -233,12 +207,9 @@ export default {
         fileName: [
           { required: true, message: "文件名不能为空", trigger: "blur" }
         ],
-        filePath: [
-          { required: true, message: "后端文件路径不能为空", trigger: "blur" }
-        ],
-        fileUrl: [
-          { required: true, message: "访问URL路径不能为空", trigger: "blur" }
-        ],
+        category: [
+          { required: true, message: "分类不能为空", trigger: "change" }
+        ]
       }
     }
   },
@@ -267,17 +238,10 @@ export default {
         resourceName: null,
         resourceKey: null,
         fileName: null,
-        filePath: null,
-        fileUrl: null,
-        fileSize: null,
-        fileType: null,
         category: null,
         description: null,
         status: null,
-        sortOrder: null,
-        createBy: null,
         createTime: null,
-        updateBy: null,
         updateTime: null
       }
       this.resetForm("form")

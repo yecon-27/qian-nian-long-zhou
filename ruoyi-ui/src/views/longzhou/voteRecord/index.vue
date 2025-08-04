@@ -1,47 +1,29 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="用户ID(关联sys_user.user_id)" prop="userId">
+      <el-form-item label="用户名" prop="userName">
         <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入用户ID(关联sys_user.user_id)"
+          v-model="queryParams.userName"
+          placeholder="请输入用户名"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="队伍ID" prop="teamId">
+      <el-form-item label="队伍名称" prop="teamName">
         <el-input
-          v-model="queryParams.teamId"
-          placeholder="请输入队伍ID"
+          v-model="queryParams.teamName"
+          placeholder="请输入队伍名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="投票日期">
-        <el-date-picker
-          v-model="daterangeVoteDate"
-          style="width: 240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="用户IP地址" prop="userIp">
-        <el-input
-          v-model="queryParams.userIp"
-          placeholder="请输入用户IP地址"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="创建时间" prop="createTime">
         <el-date-picker clearable
-          v-model="queryParams.createTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择创建时间">
+          v-model="daterangeVoteDate"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
@@ -99,24 +81,16 @@
     <el-table v-loading="loading" :data="voteRecordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="投票记录ID" align="center" prop="voteId" />
-      <el-table-column label="用户ID(关联sys_user.user_id)" align="center" prop="userId" />
-      <el-table-column label="队伍ID" align="center" prop="teamId" />
+      <el-table-column label="用户名" align="center" prop="userName" />
+      <el-table-column label="队伍名称" align="center" prop="teamName" />
       <el-table-column label="投票日期" align="center" prop="voteDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.voteDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="投票时间" align="center" prop="voteTime" width="180">
+      <el-table-column label="投票时间" align="center" prop="voteTime" width="120">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.voteTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户IP地址" align="center" prop="userIp" />
-      <el-table-column label="状态(1:有效 0:无效)" align="center" prop="status" />
-      <el-table-column label="创建者" align="center" prop="createBy" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.voteTime, '{h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -147,11 +121,30 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改投票记录-每日每用户每队伍限投1次对话框 -->
+    <!-- 添加或修改投票记录对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="队伍ID" prop="teamId">
-          <el-input v-model="form.teamId" placeholder="请输入队伍ID" />
+        <el-form-item label="用户名" prop="userName">
+          <el-input v-model="form.userName" placeholder="请输入用户名" />
+        </el-form-item>
+        <el-form-item label="队伍名称" prop="teamName">
+          <el-input v-model="form.teamName" placeholder="请输入队伍名称" />
+        </el-form-item>
+        <el-form-item label="投票日期" prop="voteDate">
+          <el-date-picker clearable
+            v-model="form.voteDate"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="请选择投票日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="投票时间" prop="voteTime">
+          <el-time-picker clearable
+            v-model="form.voteTime"
+            format="HH:mm:ss"
+            value-format="HH:mm:ss"
+            placeholder="请选择投票时间">
+          </el-time-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -193,29 +186,26 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        userId: null,
-        teamId: null,
-        voteDate: null,
-        userIp: null,
-        status: null,
-        createTime: null,
+        userName: null,
+        teamName: null,
+        voteDate: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        userId: [
-          { required: true, message: "用户ID(关联sys_user.user_id)不能为空", trigger: "blur" }
+        userName: [
+          { required: true, message: "用户名不能为空", trigger: "blur" }
         ],
-        teamId: [
-          { required: true, message: "队伍ID不能为空", trigger: "blur" }
+        teamName: [
+          { required: true, message: "队伍名称不能为空", trigger: "blur" }
         ],
         voteDate: [
           { required: true, message: "投票日期不能为空", trigger: "blur" }
         ],
         voteTime: [
           { required: true, message: "投票时间不能为空", trigger: "blur" }
-        ],
+        ]
       }
     }
   },
@@ -246,17 +236,10 @@ export default {
     reset() {
       this.form = {
         voteId: null,
-        userId: null,
-        teamId: null,
+        userName: null,
+        teamName: null,
         voteDate: null,
-        voteTime: null,
-        userIp: null,
-        userAgent: null,
-        status: null,
-        createBy: null,
-        createTime: null,
-        updateBy: null,
-        updateTime: null
+        voteTime: null
       }
       this.resetForm("form")
     },

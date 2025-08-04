@@ -17,14 +17,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="所属活动ID" prop="activityId">
-        <el-input
-          v-model="queryParams.activityId"
-          placeholder="请输入所属活动ID"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+      <!-- 删除所属活动ID搜索栏 -->
       <el-form-item label="总投票数" prop="totalVotes">
         <el-input
           v-model="queryParams.totalVotes"
@@ -98,25 +91,20 @@
 
     <el-table v-loading="loading" :data="teamList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="队伍ID" align="center" prop="teamId" />
+      <!-- 删除队伍ID列 -->
       <el-table-column label="队伍名称" align="center" prop="teamName" />
       <el-table-column label="队长/负责人" align="center" prop="teamLeader" />
-      <el-table-column label="所属活动ID" align="center" prop="activityId" />
+      <!-- 删除所属活动ID列 -->
       <el-table-column label="总投票数" align="center" prop="totalVotes" />
       <el-table-column label="今日投票数" align="center" prop="todayVotes" />
       <el-table-column label="总浏览数" align="center" prop="totalViews" />
       <el-table-column label="今日浏览数" align="center" prop="todayViews" />
       <el-table-column label="当前排名" align="center" prop="ranking" />
       <el-table-column label="显示顺序" align="center" prop="displayOrder" />
-      <el-table-column label="状态(1:正常 2:隐藏 0:删除)" align="center" prop="status" />
+      <!-- 删除状态列 -->
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -162,9 +150,7 @@
         <el-form-item label="队伍主图" prop="teamImage">
           <image-upload v-model="form.teamImage"/>
         </el-form-item>
-        <el-form-item label="所属活动ID" prop="activityId">
-          <el-input v-model="form.activityId" placeholder="请输入所属活动ID" />
-        </el-form-item>
+        <!-- 删除所属活动ID字段 -->
         <el-form-item label="显示顺序" prop="displayOrder">
           <el-input v-model="form.displayOrder" placeholder="请输入显示顺序" />
         </el-form-item>

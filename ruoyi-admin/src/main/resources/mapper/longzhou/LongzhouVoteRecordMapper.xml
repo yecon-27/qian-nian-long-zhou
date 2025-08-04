@@ -6,33 +6,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="LongzhouVoteRecord" id="LongzhouVoteRecordResult">
         <result property="voteId"    column="vote_id"    />
-        <result property="userId"    column="user_id"    />
-        <result property="teamId"    column="team_id"    />
         <result property="voteDate"    column="vote_date"    />
         <result property="voteTime"    column="vote_time"    />
-        <result property="userIp"    column="user_ip"    />
-        <result property="userAgent"    column="user_agent"    />
-        <result property="status"    column="status"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateBy"    column="update_by"    />
-        <result property="updateTime"    column="update_time"    />
+        <result property="userName"    column="user_name"    />
+        <result property="teamName"    column="team_name"    />
     </resultMap>
 
     <sql id="selectLongzhouVoteRecordVo">
-        select vote_id, user_id, team_id, vote_date, vote_time, user_ip, user_agent, status, create_by, create_time, update_by, update_time from longzhou_vote_record
+        select v.vote_id, v.vote_date, v.vote_time,
+               u.user_name, t.team_name
+        from longzhou_vote_record v
+        left join sys_user u on v.user_id = u.user_id
+        left join longzhou_team t on v.team_id = t.team_id
     </sql>
 
     <select id="selectLongzhouVoteRecordList" parameterType="LongzhouVoteRecord" resultMap="LongzhouVoteRecordResult">
         <include refid="selectLongzhouVoteRecordVo"/>
         <where>  
-            <if test="userId != null "> and user_id = #{userId}</if>
-            <if test="teamId != null "> and team_id = #{teamId}</if>
-            <if test="params.beginVoteDate != null and params.beginVoteDate != '' and params.endVoteDate != null and params.endVoteDate != ''"> and vote_date between #{params.beginVoteDate} and #{params.endVoteDate}</if>
-            <if test="userIp != null  and userIp != ''"> and user_ip like concat('%', #{userIp}, '%')</if>
-            <if test="status != null "> and status = #{status}</if>
-            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="userName != null and userName != ''"> and u.user_name like concat('%', #{userName}, '%')</if>
+            <if test="teamName != null and teamName != ''"> and t.team_name like concat('%', #{teamName}, '%')</if>
+            <if test="params.beginVoteDate != null and params.beginVoteDate != '' and params.endVoteDate != null and params.endVoteDate != ''"> and v.vote_date between #{params.beginVoteDate} and #{params.endVoteDate}</if>
         </where>
+        order by v.vote_time desc
     </select>
     
     <select id="selectLongzhouVoteRecordByVoteId" parameterType="Long" resultMap="LongzhouVoteRecordResult">

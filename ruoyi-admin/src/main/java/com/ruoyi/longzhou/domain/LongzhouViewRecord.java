@@ -13,8 +13,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author Cong
  * @date 2025-07-25
  */
-public class LongzhouViewRecord extends BaseEntity
-{
+public class LongzhouViewRecord extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 浏览记录ID */
@@ -28,7 +27,19 @@ public class LongzhouViewRecord extends BaseEntity
     /** 用户ID(关联sys_user.user_id，游客为NULL) */
     @Excel(name = "用户ID(关联sys_user.user_id，游客为NULL)")
     private Long userId;
-
+    
+    /** 用户名称 */
+    @Excel(name = "用户名称")
+    private String userName;
+    
+    /** 用户昵称 */
+    @Excel(name = "用户昵称")
+    private String nickName;
+    
+    /** 队伍名称 */
+    @Excel(name = "队伍名称")
+    private String teamName;
+    
     /** 用户IP */
     @Excel(name = "用户IP")
     private String userIp;
@@ -216,5 +227,29 @@ public class LongzhouViewRecord extends BaseEntity
             .append("sessionId", getSessionId())
             .append("createTime", getCreateTime())
             .toString();
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+    
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
+    public String getNickName() {
+        return nickName;
+    }
+    
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+    
+    public String getTeamName() {
+        return teamName;
+    }
+    
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }

@@ -9,18 +9,18 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="用户ID(关联sys_user.user_id，游客为NULL)" prop="userId">
+      <el-form-item label="队伍名称" prop="teamName">
         <el-input
-          v-model="queryParams.userId"
-          placeholder="请输入用户ID(关联sys_user.user_id，游客为NULL)"
+          v-model="queryParams.teamName"
+          placeholder="请输入队伍名称"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="用户IP" prop="userIp">
+      <el-form-item label="用户名" prop="userName">
         <el-input
-          v-model="queryParams.userIp"
-          placeholder="请输入用户IP"
+          v-model="queryParams.userName"
+          placeholder="请输入用户名"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -32,17 +32,6 @@
           value-format="yyyy-MM-dd"
           placeholder="请选择浏览日期">
         </el-date-picker>
-      </el-form-item>
-      <el-form-item label="创建时间">
-        <el-date-picker
-          v-model="daterangeCreateTime"
-          style="width: 240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -99,9 +88,14 @@
     <el-table v-loading="loading" :data="viewRecordList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="浏览记录ID" align="center" prop="viewId" />
-      <el-table-column label="队伍ID" align="center" prop="teamId" />
-      <el-table-column label="用户ID(关联sys_user.user_id，游客为NULL)" align="center" prop="userId" />
-      <el-table-column label="用户IP" align="center" prop="userIp" />
+      <el-table-column label="队伍名称" align="center" prop="teamName" />
+      <el-table-column label="用户名" align="center" width="150">
+        <template slot-scope="scope">
+          <span v-if="scope.row.userName">{{ scope.row.userName }}</span>
+          <span v-else-if="scope.row.userId">用户ID: {{ scope.row.userId }}</span>
+          <span v-else class="text-muted">游客</span>
+        </template>
+      </el-table-column>
       <el-table-column label="浏览日期" align="center" prop="viewDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.viewDate, '{y}-{m}-{d}') }}</span>
@@ -109,16 +103,7 @@
       </el-table-column>
       <el-table-column label="浏览时间" align="center" prop="viewTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.viewTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="浏览时长(秒)" align="center" prop="viewDuration" />
-      <el-table-column label="页面类型(list:列表页 detail:详情页)" align="center" prop="pageType" />
-      <el-table-column label="设备类型(mobile/desktop/tablet)" align="center" prop="deviceType" />
-      <el-table-column label="浏览器类型" align="center" prop="browserType" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.createTime, '{h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -186,20 +171,13 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      // 创建时间时间范围
-      daterangeCreateTime: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        teamId: null,
-        userId: null,
-        userIp: null,
-        viewDate: null,
-        pageType: null,
-        deviceType: null,
-        browserType: null,
-        createTime: null
+        teamName: null,  // 改为teamName
+        userName: null,
+        viewDate: null
       },
       // 表单参数
       form: {},
@@ -225,10 +203,6 @@ export default {
     getList() {
       this.loading = true
       this.queryParams.params = {}
-      if (null != this.daterangeCreateTime && '' != this.daterangeCreateTime) {
-        this.queryParams.params["beginCreateTime"] = this.daterangeCreateTime[0]
-        this.queryParams.params["endCreateTime"] = this.daterangeCreateTime[1]
-      }
       listViewRecord(this.queryParams).then(response => {
         this.viewRecordList = response.rows
         this.total = response.total
@@ -240,23 +214,16 @@ export default {
       this.open = false
       this.reset()
     },
-    // 表单重置
     reset() {
       this.form = {
         viewId: null,
         teamId: null,
         userId: null,
-        userIp: null,
         viewDate: null,
         viewTime: null,
-        viewDuration: null,
-        pageType: null,
         referrer: null,
         userAgent: null,
-        deviceType: null,
-        browserType: null,
-        sessionId: null,
-        createTime: null
+        sessionId: null
       }
       this.resetForm("form")
     },
@@ -267,7 +234,6 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.daterangeCreateTime = []
       this.resetForm("queryForm")
       this.handleQuery()
     },
