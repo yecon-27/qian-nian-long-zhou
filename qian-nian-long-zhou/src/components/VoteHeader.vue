@@ -299,12 +299,19 @@ const cancelLogout = () => {
 .right-buttons {
   position: fixed;
   top: 15%;
-  right: 10px !important;
+  right: 10px; /* 移除 !important */
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 12px;
   z-index: 10;
+}
+
+/* 添加媒体查询确保不同设备一致性 */
+@media (max-width: 375px) {
+  .right-buttons {
+    right: 8px;
+  }
 }
 </style>
 

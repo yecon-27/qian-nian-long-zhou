@@ -85,7 +85,7 @@ export default {
   text-align: left;
   /* 文字左对齐 */
   /* margin: 0 auto; 居中卡片，防止“太宽”时单卡片散开 */
-  max-width: 400px !important;
+  max-width: 1000px !important;
   /* 限制单张卡片的最大宽度，根据设计图估算 */
 }
 

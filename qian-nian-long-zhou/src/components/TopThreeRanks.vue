@@ -74,7 +74,7 @@ defineProps({
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 14px;
+  gap: 14px; /* 保持原有间距，不变 */
   padding: 14px;
   margin-bottom: 0px;
   transform: translateY(-10px);
@@ -104,7 +104,7 @@ defineProps({
 .rank-background {
   width: 100%;
   height: auto;
-  max-width: 165px;
+  max-width: 180px; /* 增大图片尺寸 */
   display: block;
 }
 
@@ -135,7 +135,7 @@ defineProps({
 /* 响应式设计 */
 @media (max-width: 768px) {
   .top-three {
-    gap: 10px;
+    gap: 10px; /* 保持间距集中 */
     padding: 10px;
   }
   
@@ -153,7 +153,7 @@ defineProps({
   }
   
   .rank-background {
-    max-width: 125px;
+    max-width: 150px; /* 增大图片尺寸 */
   }
   
   .rank-title {
@@ -167,7 +167,7 @@ defineProps({
 
 @media (max-width: 480px) {
   .top-three {
-    gap: 6px;
+    gap: 6px; /* 保持间距集中 */
     padding: 6px;
   }
   
@@ -185,7 +185,7 @@ defineProps({
   }
   
   .rank-background {
-    max-width: 100px;
+    max-width: 115px; /* 增大图片尺寸 */
   }
   
   .rank-title {

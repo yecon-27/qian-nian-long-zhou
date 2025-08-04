@@ -148,7 +148,6 @@ html {
 
 .team-cards-container {
   display: grid;
-  
   grid-template-columns: repeat(2, 1fr); /* Two columns */
   gap: 15px;
   padding: 20px 20px 80px 20px; /* 大幅增加底部内边距 */
