@@ -190,14 +190,8 @@ const cancelLogout = () => {
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: transform 0.3s ease;
   outline: none;
   /* 移除点击时的边框 */
-}
-
-.side-btn:hover {
-  transform: translateX(-5px);
-  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); */
 }
 
 .side-btn:focus {
@@ -299,7 +293,7 @@ const cancelLogout = () => {
 .right-buttons {
   position: fixed;
   top: 15%;
-  right: 10px; /* 移除 !important */
+  right: 0; /* 改为0，完全贴边 */
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
@@ -307,10 +301,17 @@ const cancelLogout = () => {
   z-index: 10;
 }
 
-/* 添加媒体查询确保不同设备一致性 */
+.side-btn img {
+  width: 30px !important;
+  height: 60px !important;
+  display: block;
+  margin-right: -1px; /* 添加负边距，消除1px间隙 */
+}
+
+/* 移除媒体查询中的额外间距 */
 @media (max-width: 375px) {
   .right-buttons {
-    right: 8px;
+    right: 0; /* 小屏幕也完全贴边 */
   }
 }
 </style>

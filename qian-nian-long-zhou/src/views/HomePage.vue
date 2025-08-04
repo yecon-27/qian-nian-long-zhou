@@ -140,33 +140,14 @@ onMounted(() => {
   background: none;
   border: none;
   padding: 0;
-  cursor: pointer;
-  transition: transform 0.3s ease;
   outline: none; /* 移除点击时的边框 */
 }
 
-/* 移除所有按钮的焦点边框 */
-.vote-btn:focus, .side-btn:focus {
-  outline: none;
-}
 
-.vote-btn:active, .side-btn:active {
-  outline: none;
-}
 
 /* 打板装饰性元素 */
 .daban-btn {
   display: block;
-}
-
-/* 按钮悬停效果 */
-.vote-btn:hover {
-  transform: scale(1.05);
-}
-
-.side-btn:hover {
-  transform: translateX(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* 按钮容器定位 */
@@ -180,7 +161,7 @@ onMounted(() => {
 .right-buttons {
   position: fixed;
   top: 15%;
-  right: 10px !important;
+  right: 0;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
@@ -269,7 +250,7 @@ onMounted(() => {
 /* 移动端适配 */
 @media (max-width: 480px) {
   .top-left-button { top: 15px; left: 15px; }
-  .right-buttons { right: 15px; }
+  .right-buttons { right: 0; }
   .center-content { margin: 40px 0 60px; padding: 15px; }
   
   .daban-btn img { width: 50px; }

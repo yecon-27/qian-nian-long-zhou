@@ -11,6 +11,20 @@
       />
     </div>
     
+    <!-- 右侧按钮组 -->
+    <div class="right-buttons">
+      <button class="side-btn" @click="$router.push('/rank')">
+        <DynamicImage 
+          resource-key="ranking_icon" 
+          fallback-url="/src/assets/首页/排行.png"
+          alt="排行" 
+        />
+      </button>
+      <button class="back-btn" @click="goBack" title="返回上一页">
+        <span class="back-text">返回</span>
+      </button>
+    </div>
+
     <!-- 标题区域 -->
     <div class="header">
       <DynamicImage 
@@ -29,12 +43,7 @@
       />
     </div>
     
-    <!-- 返回按钮 -->
-    <div class="footer">
-      <button class="back-btn" @click="$router.go(-1)">
-        返回
-      </button>
-    </div>
+
   </div>
 </template>
 
@@ -44,6 +53,11 @@ import { onMounted } from 'vue'
 import DynamicImage from '@/components/DynamicImage.vue'
 
 const router = useRouter()
+
+// 返回上一页函数
+const goBack = () => {
+  router.go(-1)
+}
 
 // 确保页面加载时滚动到顶部
 onMounted(() => {
@@ -64,9 +78,6 @@ onMounted(() => {
   flex-direction: column;   /* 垂直排列元素 */
 }
 
-/* ================================
-   背景图片容器 - 全屏背景
-   ================================ */
 .bg-container {
   position: absolute;       /* 绝对定位铺满整个页面 */
   top: 0;
@@ -82,9 +93,6 @@ onMounted(() => {
   object-fit: cover;        /* 保持比例裁剪适应容器 */
 }
 
-/* ================================
-   标题区域 - 页面顶部标题
-   ================================ */
 .header {
   position: relative;       /* 相对定位 */
   z-index: 2;              /* 在背景之上显示 */
@@ -120,43 +128,70 @@ onMounted(() => {
   border-radius: 15px;     /* 圆角效果 */
 }
 
-/* ================================
-   返回按钮 - 底部悬浮按钮
-   ================================ */
-.footer {
-  position: fixed;         /* 固定定位，不随页面滚动 */
-  bottom: 30px;           /* 距离底部30px */
-  left: 50%;              /* 左边距50% */
-  transform: translateX(-50%); /* 向左偏移自身宽度50%，实现水平居中 */
-  z-index: 100;           /* 最高层级，确保在所有内容之上 */
+.right-buttons {
+  position: fixed;
+  top: 15%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+}
+
+.side-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  /* 移除点击时的边框 */
+}
+
+.side-btn img {
+  width: 30px;
+  height: 60px;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  position: relative;
+  margin-right: -1px;
+  /* 向右偏移1px，确保完全贴边 */
 }
 
 .back-btn {
-  /* 按钮样式设计 */
-  background: linear-gradient(135deg, #4A90E2, #357ABD); /* 渐变背景 */
-  color: white;            /* 白色文字 */
-  border: none;            /* 无边框 */
-  padding: 12px 30px;      /* 内边距 */
-  border-radius: 25px;     /* 圆角按钮 */
-  font-size: 16px;         /* 字体大小 */
-  font-weight: bold;       /* 粗体文字 */
-  cursor: pointer;         /* 鼠标悬停显示手型 */
-  
-  /* 视觉效果 */
-  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3); /* 按钮阴影 */
-  transition: all 0.3s ease; /* 所有变化的平滑过渡效果 */
+  background: linear-gradient(135deg, #4A90E2, #357ABD);
+  border: none;
+  border-radius: 5px;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+  width: 32px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0;
+  /* 改为0，去除右边距 */
 }
 
-/* 按钮悬停效果 */
-.back-btn:hover {
-  transform: translateY(-2px); /* 向上移动2px */
-  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4); /* 加深阴影 */
+.back-text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  line-height: 1.4;
+  letter-spacing: 5px;
 }
 
-/* 按钮点击效果 */
-.back-btn:active {
-  transform: translateY(0); /* 恢复原位置 */
-}
 
 /* ================================
    平板设备适配 (768px以下)
@@ -180,13 +215,8 @@ onMounted(() => {
     max-width: 600px;        /* 大幅增加平板端最大宽度 */
   }
   
-  .back-btn {
-    padding: 10px 25px;      /* 缩小按钮尺寸 */
-    font-size: 14px;         /* 减小字体 */
-  }
-  
-  .footer {
-    bottom: 20px;            /* 调整底部距离 */
+  .right-buttons {
+    right: -1px;                /* 确保移动端也贴边 */
   }
 }
 
@@ -197,7 +227,9 @@ onMounted(() => {
   .header {
     padding: 25px 10px 5px; /* 进一步减少内边距，让间距更紧凑 */
   }
-  
+  .right-buttons {
+    right: -1px;                /* 确保移动端也贴边 */
+  }
   .header img {
     width: 100px;            /* 进一步缩小标题 */
   }
@@ -212,10 +244,7 @@ onMounted(() => {
     max-width: 500px;        /* 大幅增加手机端最大宽度 */
   }
   
-  .back-btn {
-    padding: 8px 20px;       /* 最小按钮尺寸 */
-    font-size: 13px;         /* 最小字体 */
-  }
+  
 }
 
 /* ================================
@@ -228,10 +257,6 @@ onMounted(() => {
   
   .dragon-boat-image {
     margin-bottom: 60px;     /* 减少底部空间 */
-  }
-  
-  .footer {
-    bottom: 15px;            /* 按钮更贴近底部 */
   }
 }
 </style>
