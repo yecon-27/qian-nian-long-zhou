@@ -192,12 +192,14 @@ export const useTeamsStore = defineStore("teams", () => {
     const selectedTeams = teamCards.value.filter(
       (team) => team.selected && !team.voted
     );
-    if (selectedTeams.length === 0) {
-      throw new Error("请选择要投票的队伍");
-    }
-  
-    if (selectedTeams.length > 3) {
-      throw new Error("最多只能选择3个队伍进行投票");
+    
+    // 修改：必须选择恰好3个队伍
+    if (selectedTeams.length !== 3) {
+      if (selectedTeams.length < 3) {
+        throw new Error(`请再选择 ${3 - selectedTeams.length} 个队伍，必须投票给3个队伍`);
+      } else {
+        throw new Error("只能选择3个队伍进行投票");
+      }
     }
   
     // 检查用户是否已经投过票

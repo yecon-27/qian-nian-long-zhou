@@ -10,7 +10,7 @@
       @click="handleSubmit"
     >
       <DynamicImage 
-        v-if="selectedCount > 0"
+        v-if="selectedCount === 3 && !hasVotedToday"
         resource-key="vote_submit_enabled" 
         fallback-url="/src/assets/投票/提交（可选状态）.png"
         alt="提交" 
@@ -47,7 +47,8 @@ export default {
   },
   computed: {
     canSubmit() {
-      return this.selectedCount > 0 && !this.hasVotedToday;
+      // 修改：只有选择恰好3个且今日未投票才能提交
+      return this.selectedCount === 3 && !this.hasVotedToday;
     }
   },
   methods: {

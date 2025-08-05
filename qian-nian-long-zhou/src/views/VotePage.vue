@@ -85,10 +85,11 @@ const handleSubmit = async (selectedCount: number) => {
     return
   }
 
-  if (selectedCount === 0) {
+  // 修改：必须选择恰好3个队伍
+  if (selectedCount !== 3) {
     showToast({
       type: 'fail',
-      message: '请选择要投票的队伍'
+      message: selectedCount < 3 ? `请再选择 ${3 - selectedCount} 个队伍，必须投票给3个队伍` : '只能选择3个队伍进行投票'
     })
     return
   }
