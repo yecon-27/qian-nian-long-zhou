@@ -1,3 +1,4 @@
+🌐 语言切换 | Language Switch: [中文](./README.cn.md) | [English](./README.md) 
 # Millennium Dragon Boat Creative Rebirth - Dragon Boat Team Voting System
 
 ## Project Overview
