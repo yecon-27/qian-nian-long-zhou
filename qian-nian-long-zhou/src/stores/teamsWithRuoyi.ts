@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { teamApi, voteApi, type TeamCard } from '@/api/team'
-import { voteApi } from '@/api/team'
 import { useAuthStore } from '@/stores/auth'
 
 // 检查是否使用Mock数据
@@ -48,8 +47,14 @@ export const useTeamsStore = defineStore('teams', () => {
   // 检查今日投票状态
   const checkTodayVoteStatus = async () => {
     try {
-      const response = await voteApi.checkTodayVote()
-      hasVotedToday.value = (response as any).hasVoted || false
+      // 使用getUserVoteHistory替代checkTodayVote
+      const authStore = useAuthStore()
+      if (authStore.isAuthenticated && authStore.user?.userId) {
+        const response = await voteApi.getUserVoteHistory(authStore.user.userId.toString())
+        hasVotedToday.value = (response as any).hasVoted || false
+      } else {
+        hasVotedToday.value = false
+      }
     } catch (err) {
       console.error('检查投票状态失败:', err)
       // 回退到本地存储检查
@@ -71,8 +76,9 @@ export const useTeamsStore = defineStore('teams', () => {
       
       // 调用后端API进行投票
       const response = await teamApi.voteForTeam(teamId, authStore.user.userId.toString())
+      const responseData = response.data || response
       
-      if (response.code === 200) {
+      if (responseData.code === 200 || response.status === 200) {
         // 投票成功，更新本地状态
         const team = teams.value.find(t => t.id === teamId)
         if (team) {
@@ -87,7 +93,7 @@ export const useTeamsStore = defineStore('teams', () => {
         
         return true
       } else {
-        throw new Error(response.msg || '投票失败')
+        throw new Error(responseData.msg || '投票失败')
       }
     } catch (err: any) {
       error.value = err.message || '投票失败'
@@ -109,9 +115,10 @@ export const useTeamsStore = defineStore('teams', () => {
 
     try {
       const response = await voteApi.getUserVoteStatus(authStore.user.userId.toString())
+      const responseData = response.data || response
       
-      if (response.code === 200) {
-        const status = response.data
+      if (responseData.code === 200 || response.status === 200) {
+        const status = responseData.data || responseData
         hasVotedToday.value = status.todayVoteCount >= status.dailyVoteLimit
       }
     } catch (err) {
