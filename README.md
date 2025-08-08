@@ -1,246 +1,241 @@
-🌐 语言切换 | Language Switch: [English](./README.en.md) | [中文](./README.md)
+🌐 语言切换 | Language Switch: [中文](./README.cn.md) | [English](./README.md) 
+# Millennium Dragon Boat Creative Rebirth - Dragon Boat Team Voting System
 
-# 千年龙舟创意新生 - 龙舟队伍投票系统
+## Project Overview
 
-## 项目简介
+This is a full-stack mobile dragon boat team voting system based on SpringBoot + Vue 3, where users can vote for different dragon boat teams and view real-time rankings. The project adopts a front-end and back-end separation architecture, with the backend built on the RuoYi framework, providing complete user management, permission control, and data persistence functionality.
 
-这是一个基于 SpringBoot + Vue 3 的移动端全栈龙舟队伍投票系统，用户可以为不同的龙舟队伍投票，并查看实时排行榜。项目采用前后端分离架构，后端基于若依（RuoYi）框架构建，提供完整的用户管理、权限控制和数据持久化功能。
 ![3bec9fbeec3cd8fbd514d2db3699f8c](https://github.com/user-attachments/assets/c576c689-01f5-4cf4-b7da-ca6ea25a901f)
 
-## 技术栈
+## Technology Stack
 
-### 前端技术
+### Frontend Technologies
+- **Vue 3** - Using Composition API
+- **TypeScript** - Type safety
+- **Pinia** - State management
+- **Vue Router** - Route management
+- **Vite** - Build tool
+- **Element Plus / Vant** - UI component library
 
-- **Vue 3** - 使用 Composition API
-- **TypeScript** - 类型安全
-- **Pinia** - 状态管理
-- **Vue Router** - 路由管理
-- **Vite** - 构建工具
-- **Element Plus / Vant** - UI 组件库
+### Backend Technologies
+- **Spring Boot** - Backend framework
+- **RuoYi Framework** - Rapid development platform
+- **Spring Security** - Security framework
+- **MyBatis Plus** - ORM framework
+- **MySQL** - Database
+- **Redis** - Cache
 
-### 后端技术
+## Project Progress
 
-- **Spring Boot** - 后端框架
-- **若依（RuoYi）框架** - 快速开发平台
-- **Spring Security** - 安全框架
-- **MyBatis Plus** - ORM 框架
-- **MySQL** - 数据库
-- **Redis** - 缓存
+- `7.14-7.16` - **Frontend Development** - Vue 3 frontend application
+- `7.24` - **Frontend Deployment** - Vercel deployment configuration completed
+- `7.24` - **SQL Database Tables** - 4 main tables generated
+- `7.25-7.28` - **Backend Deployment** - Backend API interface deployment configuration completed
+- `7.28-8.1` - **Full-stack Integration** - Frontend and backend interface integration completed
+- `Future` - **Cloud Server Deployment** - Frontend and backend deployment to cloud servers
 
-##  项目进度
+## Core Features
 
-- `7.14-7.16`- **前端开发** - Vue 3 前端应用
-- `7.24`- **前端部署** - Vercel 部署配置已完成
-- `7.24`- **SQL数据库表4张主表生成** 
-- `7.25-7.28`- **后端部署** - 后端 API 接口部署配置已完成
-- `7.28-8.1` **全栈集成** - 前后端接口联调已完成
--  `未来` - **前后端上线云服务器**
+- **Voting System** - Daily voting limits with real-time vote count updates
+- **Leaderboard** - Real-time ranking display based on vote counts
+- **Detail Pages** - Team information and statistics (real-time view count updates) display
+- **Search Functionality** - Support for team name and author search
+- **Responsive Design** - Mobile and desktop adaptation
+- **Admin Backend** - Complete management system based on RuoYi framework
+- **Anonymous Users** - Can view leaderboards and rules without login
+- **Extensibility** - Image information can be updated and replaced
 
+<img src="https://github.com/user-attachments/assets/1289c5e5-f77f-49b0-84a8-8cd3a9fbe542" width ="200"><img src="https://github.com/user-attachments/assets/2a0e9c27-a7d2-4f7f-a428-c84bd08fb66b" width ="200"><img src="https://github.com/user-attachments/assets/c3df6fe7-4d02-4312-9a1b-0bba9b16a97c" width ="200"><img src="https://github.com/user-attachments/assets/981add77-4450-4afa-843c-96b9149eeb19" width ="200">
 
-## 核心功能
+## 🚀 Quick Start
 
-- **投票系统** - 每日限制投票，实时更新票数
-- **排行榜** - 基于票数的实时排名展示
-- **详情页面** - 队伍信息、统计数据（浏览量实时更新）展示
-- **搜索功能** - 支持队伍名称和作者搜索
-- **响应式设计** - 移动端和桌面端适配
-- **管理后台** - 基于若依框架的完整管理系统
-- **匿名用户** - 可免登录查看排行榜与规则
-- **拓展性** - 图片信息可更新替换
-  
- <img src="https://github.com/user-attachments/assets/1289c5e5-f77f-49b0-84a8-8cd3a9fbe542" width ="200">
- <img src="https://github.com/user-attachments/assets/2a0e9c27-a7d2-4f7f-a428-c84bd08fb66b" width ="200">
- <img src="https://github.com/user-attachments/assets/c3df6fe7-4d02-4312-9a1b-0bba9b16a97c" width ="200">
- <img src="https://github.com/user-attachments/assets/981add77-4450-4afa-843c-96b9149eeb19" width ="200">
+### Environment Requirements
 
-## 🚀 快速启动
+- **Java**: JDK 8 or higher
+- **Node.js**: 16.x or higher
+- **MySQL**: 5.7 or higher
+- **Redis**: 6.x or higher
+- **Maven**: 3.6 or higher
 
-### 环境要求
+### 1. Database Configuration
 
-- **Java**: JDK 8 或以上版本
-- **Node.js**: 16.x 或以上版本
-- **MySQL**: 5.7 或以上版本
-- **Redis**: 6.x 或以上版本
-- **Maven**: 3.6 或以上版本
+1. Database tables:
 
-### 1. 数据库配置
-1. 数据库表：`
+![Database Tables](https://github.com/user-attachments/assets/b6da8314-b96f-4db2-88b2-fd9626c4de78)
 
-![数据库表](https://github.com/user-attachments/assets/b6da8314-b96f-4db2-88b2-fd9626c4de78)
+### 2. Backend Startup (Spring Boot + RuoYi Framework)
 
-### 2. 后端启动（Spring Boot + 若依框架）
-
-1. **配置数据库连接**
-   ```bash
-   # 编辑配置文件
-   ruoyi-admin/src/main/resources/application-druid.yml
-   ```
-
-2. **启动后端服务**
-   ```bash
-   # 方式一：使用 IDE 运行
-   # 运行 ruoyi-admin/src/main/java/com/ruoyi/RuoYiApplication.java
-   
-   # 方式二：使用 Maven 命令
-   mvn clean install
-   cd ruoyi-admin
-   mvn spring-boot:run
-   ```
-
-   后端服务将在 `http://localhost:8080` 启动
-
-### 3. 若依管理前端启动
+1. **Configure database connection**
 
 ```bash
-# 进入若依前端目录
+# Edit configuration file
+ruoyi-admin/src/main/resources/application-druid.yml
+```
+
+2. **Start backend service**
+
+```bash
+# Method 1: Run using IDE
+# Run ruoyi-admin/src/main/java/com/ruoyi/RuoYiApplication.java
+
+# Method 2: Use Maven commands
+mvn clean install
+cd ruoyi-admin
+mvn spring-boot:run
+```
+
+Backend service will start at `http://localhost:8080`
+
+### 3. RuoYi Management Frontend Startup
+
+```bash
+# Enter RuoYi frontend directory
 cd ruoyi-ui
 
-# 安装依赖
+# Install dependencies
 npm install
 
-# 启动开发服务器
+# Start development server
 npm run dev
 ```
 
-若依管理系统将在 `http://localhost:80` 启动
+RuoYi management system will start at `http://localhost:80`
 
-**默认管理员账号**：
-- 用户名：`admin`
-- 密码：`admin123`
+**Default admin account**:
+- Username: `admin`
+- Password: `admin123`
 
-### 4. 主前端应用启动
+### 4. Main Frontend Application Startup
 
 ```bash
-# 进入主前端目录
+# Enter main frontend directory
 cd qian-nian-long-zhou
 
-# 安装依赖
+# Install dependencies
 npm install
 
-# 启动开发服务器
+# Start development server
 npm run dev
 ```
 
-主前端应用将在 `http://localhost:5173` 启动
+Main frontend application will start at `http://localhost:5173`
 
-### 5. 生产环境构建
+### 5. Production Environment Build
 
 ```bash
-# 构建后端
+# Build backend
 mvn clean package
 
-# 构建若依前端
+# Build RuoYi frontend
 cd ruoyi-ui
 npm run build:prod
 
-# 构建主前端
+# Build main frontend
 cd qian-nian-long-zhou
 npm run build
 ```
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
-千年龙舟项目/
-├── .gitignore                    # Git 忽略文件
-├── LICENSE                       # 开源协议
-├── README.md                     # 项目说明文档
-├── pom.xml                       # Maven 主配置文件
-├── ry.bat                        # 后端启动脚本（Windows）
-├── ry.sh                         # 后端启动脚本（Linux/Mac）
-├── backend-sql                   # MySQL数据库表
-├── bin/                          # 批处理脚本目录
-│   ├── clean.bat                 # 清理脚本
-│   ├── package.bat               # 打包脚本
-│   └── run.bat                   # 运行脚本
-├── doc/                          # 文档目录
-│   └── 若依环境使用手册.docx      # 若依框架使用手册
-├── sql/                          # 数据库脚本
-│   ├── ry_20250522.sql           # 若依基础数据
-│   ├── longzhou_team.sql         # 龙舟队伍表
-│   ├── longzhou_vote.sql         # 投票记录表
-│   └── quartz.sql                # 定时任务表
-├── qian-nian-long-zhou/          # 主前端应用（Vue 3）
+Millennium-Dragon-Boat-Project/
+├── .gitignore                    # Git ignore file
+├── LICENSE                       # Open source license
+├── README.md                     # Project documentation
+├── pom.xml                       # Maven main configuration file
+├── ry.bat                        # Backend startup script (Windows)
+├── ry.sh                         # Backend startup script (Linux/Mac)
+├── backend-sql                   # MySQL database tables
+├── bin/                          # Batch script directory
+│   ├── clean.bat                 # Clean script
+│   ├── package.bat               # Package script
+│   └── run.bat                   # Run script
+├── doc/                          # Documentation directory
+│   └── 若依环境使用手册.docx      # RuoYi framework manual
+├── sql/                          # Database scripts
+│   ├── ry_20250522.sql           # RuoYi base data
+│   ├── longzhou_team.sql         # Dragon boat team table
+│   ├── longzhou_vote.sql         # Voting record table
+│   └── quartz.sql                # Scheduled task table
+├── qian-nian-long-zhou/          # Main frontend application (Vue 3)
 │   ├── src/
-│   │   ├── api/                  # API 接口层
-│   │   ├── assets/               # 静态资源
-│   │   ├── components/           # 公共组件
-│   │   ├── composables/          # 组合式函数
-│   │   ├── directives/           # 自定义指令
-│   │   ├── router/               # 路由配置
-│   │   ├── stores/               # 状态管理 (Pinia)
-│   │   ├── utils/                # 工具函数
-│   │   └── views/                # 页面组件
-│   ├── docs/                     # 项目文档
-│   ├── public/                   # 公共资源
-│   ├── package.json              # 依赖配置
-│   ├── vite.config.ts            # Vite 配置
-│   └── vercel.json               # Vercel 部署配置
-├── ruoyi-ui/                     # 若依管理前端（Vue 2）
+│   │   ├── api/                  # API interface layer
+│   │   ├── assets/               # Static resources
+│   │   ├── components/           # Common components
+│   │   ├── composables/          # Composable functions
+│   │   ├── directives/           # Custom directives
+│   │   ├── router/               # Route configuration
+│   │   ├── stores/               # State management (Pinia)
+│   │   ├── utils/                # Utility functions
+│   │   └── views/                # Page components
+│   ├── docs/                     # Project documentation
+│   ├── public/                   # Public resources
+│   ├── package.json              # Dependency configuration
+│   ├── vite.config.ts            # Vite configuration
+│   └── vercel.json               # Vercel deployment configuration
+├── ruoyi-ui/                     # RuoYi management frontend (Vue 2)
 │   ├── src/
-│   │   ├── api/                  # API 接口
-│   │   ├── assets/               # 静态资源
-│   │   ├── components/           # 组件
-│   │   ├── directive/            # 指令
-│   │   ├── layout/               # 布局
-│   │   ├── router/               # 路由
-│   │   ├── store/                # Vuex 状态管理
-│   │   ├── utils/                # 工具类
-│   │   └── views/                # 页面
-│   ├── bin/                      # 批处理脚本
-│   │   ├── build.bat             # 构建脚本
-│   │   ├── package.bat           # 打包脚本
-│   │   └── run-web.bat           # 启动脚本
-│   ├── package.json              # 依赖配置
-│   └── vue.config.js             # Vue CLI 配置
-├── ruoyi-admin/                  # 后端主模块
-│   ├── src/main/java/com/ruoyi/  # Java 源码
-│   ├── src/main/resources/       # 配置文件
-│   └── pom.xml                   # Maven 配置
-├── ruoyi-common/                 # 通用模块
-├── ruoyi-framework/              # 框架模块
-├── ruoyi-generator/              # 代码生成模块
-├── ruoyi-quartz/                 # 定时任务模块
-└── ruoyi-system/                 # 系统模块
+│   │   ├── api/                  # API interfaces
+│   │   ├── assets/               # Static resources
+│   │   ├── components/           # Components
+│   │   ├── directive/            # Directives
+│   │   ├── layout/               # Layout
+│   │   ├── router/               # Routes
+│   │   ├── store/                # Vuex state management
+│   │   ├── utils/                # Utility classes
+│   │   └── views/                # Pages
+│   ├── bin/                      # Batch scripts
+│   │   ├── build.bat             # Build script
+│   │   ├── package.bat           # Package script
+│   │   └── run-web.bat           # Startup script
+│   ├── package.json              # Dependency configuration
+│   └── vue.config.js             # Vue CLI configuration
+├── ruoyi-admin/                  # Backend main module
+│   ├── src/main/java/com/ruoyi/  # Java source code
+│   ├── src/main/resources/       # Configuration files
+│   └── pom.xml                   # Maven configuration
+├── ruoyi-common/                 # Common module
+├── ruoyi-framework/              # Framework module
+├── ruoyi-generator/              # Code generation module
+├── ruoyi-quartz/                 # Scheduled task module
+└── ruoyi-system/                 # System module
 ```
-## 📚 文档导航
 
-### 快速链接
+## 📚 Documentation Navigation
 
-- [安装指南](./docs/setup/installation.md) - 项目安装和配置
-- [开发环境配置](./docs/setup/development.md) - 开发环境设置
-- [投票系统说明](./docs/business/voting-system.md) - 业务功能介绍
-- [组件开发指南](./docs/frontend/component-guide.md) - 前端开发规范
-- [问题排查](./docs/development/troubleshooting.md) - 常见问题解决
+### Quick Links
+- [Installation Guide](./docs/setup/installation.md) - Project installation and configuration
+- [Development Environment Setup](./docs/setup/development.md) - Development environment settings
+- [Voting System Documentation](./docs/business/voting-system.md) - Business functionality introduction
+- [Component Development Guide](./docs/frontend/component-guide.md) - Frontend development standards
+- [Troubleshooting](./docs/development/troubleshooting.md) - Common problem solutions
 
-### 部署文档
+### Deployment Documentation
+- [Complete Deployment Guide](./docs/VERCEL_DEPLOYMENT_COMPLETE_GUIDE.md) - Complete Vercel deployment process
+- [Deployment Checklist](./docs/DEPLOYMENT_CHECKLIST.md) - Pre and post deployment checklist
+- [Troubleshooting Quick Reference](./docs/DEPLOYMENT_TROUBLESHOOTING_QUICK_REFERENCE.md) - Common deployment issue solutions
+- [Environment Variable Configuration](./docs/vercel-environment-setup.md) - Detailed environment variable setup
 
-- [完整部署指南](./docs/VERCEL_DEPLOYMENT_COMPLETE_GUIDE.md) - Vercel 部署完整流程
-- [部署检查清单](./docs/DEPLOYMENT_CHECKLIST.md) - 部署前后检查项目
-- [故障排除快速参考](./docs/DEPLOYMENT_TROUBLESHOOTING_QUICK_REFERENCE.md) - 常见部署问题解决
-- [环境变量配置](./docs/vercel-environment-setup.md) - 详细环境变量设置
+## 🔧 Development Tool Scripts
 
-## 🔧 开发工具脚本
+### Windows Batch Scripts
+- `ry.bat` - One-click backend service startup
+- `bin/clean.bat` - Clean compiled files
+- `bin/package.bat` - Package project
+- `bin/run.bat` - Run project
+- `ruoyi-ui/bin/run-web.bat` - Start RuoYi frontend
+- `ruoyi-ui/bin/build.bat` - Build RuoYi frontend
 
-### Windows 批处理脚本
+### Recommended Startup Sequence
+1. **Start database services** (MySQL, Redis)
+2. **Start backend service**: `ry.bat`
+3. **Start RuoYi management frontend**: `cd ruoyi-ui && npm run dev`
+4. **Start main frontend application**: `cd qian-nian-long-zhou && npm run dev`
 
-- `ry.bat` - 一键启动后端服务
-- `bin/clean.bat` - 清理编译文件
-- `bin/package.bat` - 打包项目
-- `bin/run.bat` - 运行项目
-- `ruoyi-ui/bin/run-web.bat` - 启动若依前端
-- `ruoyi-ui/bin/build.bat` - 构建若依前端
-
-### 启动顺序建议
-
-1. **启动数据库服务**（MySQL、Redis）
-2. **启动后端服务**：`ry.bat`
-3. **启动若依管理前端**：`cd ruoyi-ui && npm run dev`
-4. **启动主前端应用**：`cd qian-nian-long-zhou && npm run dev`
-
-详细的技术实现和开发指南请参考 [完整文档](./qian-nian-long-zhou/docs/README.md)。
+For detailed technical implementation and development guides, please refer to the [complete documentation](./qian-nian-long-zhou/docs/README.md).
 
 ---
-***最后更新***: 2025 年 8 月 1 日  
----
 
+***Last Updated***: August 1, 2025
+
+---
