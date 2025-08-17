@@ -61,10 +61,13 @@ This is a full-stack mobile dragon boat team voting system based on SpringBoot +
 
 1. Database tables:
 ![Database Tables](https://github.com/user-attachments/assets/b6da8314-b96f-4db2-88b2-fd9626c4de78)
+Remember to change the p
 
 ### 2. Backend Startup (Spring Boot + RuoYi Framework)
 
 1. **Configure database connection**
+Change the password to your own.
+<img width="1739" height="490" alt="image" src="https://github.com/user-attachments/assets/0ce88933-f275-4ae3-ad2d-c615ea2d8573" />
 
 ```bash
 # Edit configuration file
