@@ -60,7 +60,6 @@ This is a full-stack mobile dragon boat team voting system based on SpringBoot +
 ### 1. Database Configuration
 
 1. Database tables:
-
 ![Database Tables](https://github.com/user-attachments/assets/b6da8314-b96f-4db2-88b2-fd9626c4de78)
 
 ### 2. Backend Startup (Spring Boot + RuoYi Framework)
@@ -201,21 +200,6 @@ Millennium-Dragon-Boat-Project/
 └── ruoyi-system/                 # System module
 ```
 
-## 📚 Documentation Navigation
-
-### Quick Links
-- [Installation Guide](./docs/setup/installation.md) - Project installation and configuration
-- [Development Environment Setup](./docs/setup/development.md) - Development environment settings
-- [Voting System Documentation](./docs/business/voting-system.md) - Business functionality introduction
-- [Component Development Guide](./docs/frontend/component-guide.md) - Frontend development standards
-- [Troubleshooting](./docs/development/troubleshooting.md) - Common problem solutions
-
-### Deployment Documentation
-- [Complete Deployment Guide](./docs/VERCEL_DEPLOYMENT_COMPLETE_GUIDE.md) - Complete Vercel deployment process
-- [Deployment Checklist](./docs/DEPLOYMENT_CHECKLIST.md) - Pre and post deployment checklist
-- [Troubleshooting Quick Reference](./docs/DEPLOYMENT_TROUBLESHOOTING_QUICK_REFERENCE.md) - Common deployment issue solutions
-- [Environment Variable Configuration](./docs/vercel-environment-setup.md) - Detailed environment variable setup
-
 ## 🔧 Development Tool Scripts
 
 ### Windows Batch Scripts
@@ -236,6 +220,6 @@ For detailed technical implementation and development guides, please refer to th
 
 ---
 
-***Last Updated***: August 1, 2025
+***Last Updated***: August 17, 2025
 
 ---
