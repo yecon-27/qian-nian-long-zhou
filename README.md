@@ -1,6 +1,6 @@
 # Millennium Dragon Boat Creative Rebirth - Dragon Boat Team Voting System
 
-**Language**: English | [中文](./README.cn.md)
+**Language**: [English](./README.md) | [中文](./README.cn.md)
 
 A full-stack mobile dragon boat team voting system built with SpringBoot + Vue 3, featuring real-time voting, leaderboards, and comprehensive admin panel. Built on RuoYi framework with front-end and back-end separation architecture.
 
