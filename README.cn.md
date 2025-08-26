@@ -47,7 +47,7 @@
    ```
 
 2. **数据库配置**
-   - 导入 `sql/` 和 `backend-sql/` 目录下的SQL文件
+   - 导入 `sql/` 目录下的SQL文件
    - 配置 `ruoyi-admin/src/main/resources/application-druid.yml`
 
 3. **启动服务**
