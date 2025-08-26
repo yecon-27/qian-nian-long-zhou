@@ -48,7 +48,7 @@ A full-stack mobile dragon boat team voting system built with SpringBoot + Vue 3
 
 2. **Database setup**
 
-   - Import SQL files from `sql/` and `backend-sql/` directories
+   - Import SQL files from `sql/` directories
    - Configure `ruoyi-admin/src/main/resources/application-druid.yml`
 
 3. **Start services**
